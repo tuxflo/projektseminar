@@ -47,7 +47,7 @@ void addToTable(Table *table, unsigned int key, void *value) {
 }
 
 void verifyTable(const Table *table, size_t i) {
-    printf("Verifying table %zu:\n\n", i);
+    printf("\n\nVerifying table %zu:\n\n", i);
     printf("Entry count: %d\n", table->count);
     for (size_t i = 0; i < table->count; i++) {
         Entry *current = table->entries[table->localAddressBook[i]];
@@ -100,7 +100,7 @@ int main(void) {
         addToTable(&tables[tableKey], key, token2);
 
         insertCount++;
-        if (insertCount > 10) {
+        if (insertCount > 100) {
             break;
         }
     }
