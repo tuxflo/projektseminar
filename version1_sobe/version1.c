@@ -5,6 +5,7 @@
 #include <limits.h>
 
 #define TABLE_COUNT 5
+#define INSERT_COUNT 100
 #define ELEMENT_COUNT 10000
 
 typedef struct Entry {
@@ -100,7 +101,7 @@ int main(void) {
         addToTable(&tables[tableKey], key, token2);
 
         insertCount++;
-        if (insertCount > 100) {
+        if (insertCount > INSERT_COUNT) {
             break;
         }
     }
