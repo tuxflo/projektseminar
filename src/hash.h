@@ -1,5 +1,5 @@
-#ifndef Hash_h
-#define Hash_h
+#ifndef HASH_H
+#define HASH_H
 
 uint32_t jenkinsHash(const uint8_t* key, size_t length) {
     size_t i = 0;
@@ -22,5 +22,4 @@ uint8_t nodeHash(const uint8_t nodeKey, const uint8_t nodeCount) {
 uint32_t localHash(const uint32_t localKey, const uint32_t localElementCount) {
     return localKey%localElementCount;
 }
-
 #endif

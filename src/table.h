@@ -1,5 +1,5 @@
-#ifndef Table_h
-#define Table_h
+#ifndef TABLE_H
+#define TABLE_H
 
 #include "entry.h"
 

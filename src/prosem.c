@@ -14,9 +14,12 @@
 
 int main(void) {
     FILE *fp;
-    char *line = NULL;
+    char *line = NULL, *key, *value;
     size_t len = 0;
     ssize_t read;
+    int insertCount = 0;
+    uint32_t keyHash, localPart;
+    uint8_t nodePart;
 
     Table tables[TABLE_COUNT];
     for (int i = 0; i < TABLE_COUNT; i++) {
@@ -27,12 +30,6 @@ int main(void) {
     if (fp == NULL) {
         exit(EXIT_FAILURE);
     }
-
-    int insertCount = 0;
-    uint32_t keyHash;
-    uint8_t nodePart;
-    uint32_t localPart;
-    char *key, *value;
 
     while ((read = getline(&line, &len, fp)) != -1) {
         printf("%s", line);
@@ -46,9 +43,12 @@ int main(void) {
         }
 
         keyHash = jenkinsHash((uint8_t*)key, strlen(key));
+
         separate(keyHash, &localPart, &nodePart);
+
         uint8_t nodeKey = nodeHash(nodePart, TABLE_COUNT);
         uint32_t localKey = localHash(localPart, ELEMENT_COUNT);
+        
         addToTable(&tables[nodeKey], localKey, keyHash, value);
 
         insertCount++;
