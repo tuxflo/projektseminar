@@ -4,7 +4,7 @@
 #define BUFFER_SIZE 256
 
 typedef struct Entry {
-        uint32_t key;
+        char key[BUFFER_SIZE];
         char value[BUFFER_SIZE];
 } Entry;
 #endif
