@@ -1,6 +1,7 @@
 #include "ga.h"
 #include <stddef.h> //for offsetoff usage
 #include <string.h>
+#include <stdio.h>
 int ga_put(GA ga, int ilo, int target, Entry *e)
 {
   int jlo = target;
@@ -20,6 +21,11 @@ int ga_put(GA ga, int ilo, int target, Entry *e)
 
   /* Using lock_shared allows get accesses to proceed */
   MPI_Win_lock(MPI_LOCK_SHARED, rank, MPI_MODE_NOCHECK, ga->ga_win);
+  Entry tmp;
+  Entry *tmp_ptr = &tmp;
+  MPI_Get(tmp_ptr, (jlast-jcur+1)*(ilo-ilo +1), ga->dtype, rank, (jcur-jfirst)*ga->dim1 + (ilo-1), 1, ga->dtype, ga->ga_win);
+  if(strlen(tmp_ptr->name) > 0)
+    printf("collision! previous value: %s\n", tmp_ptr->name);
 
   MPI_Put(e, (jlast-jcur+1)*(ilo-ilo +1), ga->dtype, rank, (jcur-jfirst)*ga->dim1 + (ilo-1), 1, ga->dtype, ga->ga_win);
 
