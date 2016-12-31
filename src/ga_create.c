@@ -1,7 +1,6 @@
 #include "ga.h"
 #include <stdio.h>
-int ga_create(MPI_Comm comm, int dim1, int dim2,
-              MPI_Datatype dtype, GA *ga)
+int ga_create(MPI_Comm comm, int dim1, int dim2, GA *ga)
 {
     GA       new_ga;
     int      size, chunk2, sizeoftype;
@@ -46,8 +45,10 @@ int ga_create(MPI_Comm comm, int dim1, int dim2,
     MPE_Mutex_create(comm, size, &new_ga->lock_win);
 
     /* Save other data and return */
-    new_ga->dtype      = mpi_Entry_type;   new_ga->dtype_size = sizeof(Entry);
-    new_ga->dim1       = dim1;    new_ga->dim2       = dim2;
+    new_ga->dtype      = mpi_Entry_type;
+    new_ga->dtype_size = sizeof(Entry);
+    new_ga->dim1       = dim1;
+    new_ga->dim2       = dim2;
     new_ga->chunk2     = chunk2;
     *ga                = new_ga;
     return 1;

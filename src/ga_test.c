@@ -19,17 +19,6 @@ int main(int argc, char **argv) {
   int name_len;
   MPI_Get_processor_name(processor_name, &name_len);
   const int nitems=2;
-  /* pass the size of the struct entries: 1 int, BUFFER_SIZE chars */
-  int          blocklengths[2] = {1,BUFFER_SIZE};
-  MPI_Datatype types[2] = {MPI_INT, MPI_CHAR};
-  MPI_Datatype mpi_Entry_type;
-  MPI_Aint     offsets[2];
-
-  offsets[0] = offsetof(Entry, id);
-  offsets[1] = offsetof(Entry, name);
-
-  MPI_Type_create_struct(nitems, blocklengths, offsets, types, &mpi_Entry_type);
-  MPI_Type_commit(&mpi_Entry_type);
 
   // Print off a hello world message
   printf("Hello world from processor %s, rank %d"
@@ -38,7 +27,7 @@ int main(int argc, char **argv) {
 
   GA global_array;
 
-  ga_create(MPI_COMM_WORLD, 10, 4, mpi_Entry_type, &global_array);
+  ga_create(MPI_COMM_WORLD, 10, 4, &global_array);
   Entry *received;
 
   MPI_Status status;
