@@ -29,7 +29,8 @@ int ga_get( GA ga, int ilo, int jlo, int jhigh, Entry *buf )
  
     /* Using lock_shared allows other get accesses to proceed */ 
     MPI_Win_lock( MPI_LOCK_SHARED, rank, MPI_MODE_NOCHECK, ga->ga_win ); 
-    MPI_Get(buf, sizeof(Entry), mpi_Entry_type, rank, ilo, 1, mpi_Entry_type, ga->ga_win);
+    //MPI_Get(buf, sizeof(Entry), mpi_Entry_type, rank, ilo, 1, mpi_Entry_type, ga->ga_win);
+    MPI_Get(buf, (jlast-jcur+1)*(ilo-ilo +1), mpi_Entry_type, rank, (jcur-jfirst)*ga->dim1 + (ilo-1), 1, mpi_Entry_type, ga->ga_win);
     //e = (void *) ( ((char *)e) + (jlast-jcur+1)*(ihigh-ilo+1)*ga->dtype_size);
     //for (j=jcur; j<=jlast; j++) { 
     //  disp = (j - jfirst) * ga->dim1 + (ilo - 1); 

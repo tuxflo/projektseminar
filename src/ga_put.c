@@ -29,7 +29,9 @@ int ga_put(GA ga, int ilo, int jlo, int jhigh, Entry *e)
   /* Using lock_shared allows get accesses to proceed */
   MPI_Win_lock(MPI_LOCK_SHARED, rank, MPI_MODE_NOCHECK,
       ga->ga_win);
-  MPI_Put(e, sizeof(Entry), ga->dtype, rank, (jcur-jfirst)*ga->dim1 + (ilo-1), 1, mpi_Entry_type, ga->ga_win);
+  
+  //oMPI_Put(e, 1, mpi_Entry_type, rank, 2, 1, mpi_Entry_type, ga->ga_win);
+    MPI_Put(e, (jlast-jcur+1)*(ilo-ilo +1), mpi_Entry_type, rank, (jcur-jfirst)*ga->dim1 + (ilo-1), 1, mpi_Entry_type, ga->ga_win);
   /*for (j=jcur; j<=jlast; j++) {*/
     /*disp = (j - jfirst) * ga->dim1 + (ilo - 1);*/
     /*MPI_Put(buf, ihigh - ilo + 1, ga->dtype,*/
