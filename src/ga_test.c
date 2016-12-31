@@ -47,7 +47,7 @@ int main(int argc, char **argv) {
     MPI_Recv(message, 30, MPI_CHAR, 1, 99, MPI_COMM_WORLD, &status);
     printf("received: %s\n", message);
     //einzeles GA Objekt, speicher anfang, speicher Ende, Ziel rank1, Ziel rank2 ... bei uns gleich, da Daten nur auf einem einzelnen Rank gespeichert werden sollen
-    ga_get(global_array, 2, 1, 1, received);
+    ga_get(global_array, 1, 1, received);
     printf("Buffer content: name: %s id: %d\n", received->name, received->id);
 
   }
@@ -55,10 +55,10 @@ int main(int argc, char **argv) {
     Entry e;
     e.id=42;
     strcpy(e.name, "deadbeef");
-    ga_put(global_array, 2, 1, 1, &e); 
+    ga_put(global_array, 1, 1, &e); 
     e.id=23;
     strcpy(e.name, "foobar");
-    ga_put(global_array, 1, 1, 1, &e); 
+    ga_put(global_array, 1, 1, &e); 
     MPI_Send("Hello getter", 20, MPI_CHAR, 0, 99, MPI_COMM_WORLD);
   }
 

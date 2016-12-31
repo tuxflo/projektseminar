@@ -11,6 +11,7 @@ int ga_free(GA ga)
         MPI_Free_mem(ga_win_ptr);
     MPE_Mutex_free(&ga->lock_win);
 
+    MPI_Type_free(&ga->dtype);
     free(ga);
     return 0;
 }
