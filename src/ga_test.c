@@ -32,25 +32,45 @@ int main(int argc, char **argv) {
 
   MPI_Status status;
   char message[30];
-  Entry e;
-  strcpy(e.name, "deadbeef");
-  strcpy(e.id, "10001");
-  Entry e2;
-  strcpy(e2.name, "test");
-  strcpy(e2.id, "555");
+  FILE *fp;
+  char *line = NULL, *key, *value;
+  size_t len = 0;
+  ssize_t read;
+  int insertCount = 0;
+
+  //Do work!
   if(world_rank == 0) {
     //MPI_Recv(message, 30, MPI_CHAR, 1, 99, MPI_COMM_WORLD, &status);
     //printf("received: %s\n", message);
-    ga_put(global_array, &e); 
-    ga_put(global_array, &e2); 
+    fp = fopen("../names.txt", "r");
+    if (fp == NULL) {
+        exit(EXIT_FAILURE);
+    }
+
+    while ((read = getline(&line, &len, fp)) != -1) {
+      if(insertCount >= TABLE_COUNT * ELEMENT_COUNT)
+        break;
+      Entry e;
+      printf("%s", line);
+      if ((key = strsep(&line, ",")) == NULL) {
+        printf("ERROR key:%s\n", key);
+        continue;
+      }
+      if ((value = strsep(&line, ",")) == NULL) {
+        printf("ERROR value:%s\n", value);
+        continue;
+      }
+      strcpy(e.id, key);
+      strcpy(e.name, value);
+      ga_put(global_array, &e); 
+      insertCount++;
+    }
   }
   else {
-    char **buf;
-    ga_get(global_array, e.id, buf);
-    printf("Get value: %s from key: %s\n", *buf, e.id);
-    ga_get(global_array, "10001", buf);
-    printf("Get value: %s from key: %s\n", *buf, e.id);
-    free(*buf);
+    //char **buf;
+    //ga_get(global_array, "1", buf);
+    //printf("Get value: %s from key: %s\n", *buf, "1");
+    //free(*buf);
     //MPI_Send("Hello getter", 20, MPI_CHAR, 0, 99, MPI_COMM_WORLD);
   }
 

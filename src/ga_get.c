@@ -31,7 +31,7 @@ int ga_get( GA ga, char *key, char **buf )
   MPI_Win_lock( MPI_LOCK_SHARED, nodeIdx, MPI_MODE_NOCHECK, ga->ga_win ); 
 
   //printf("nodeIdx: %d, idx: %d\n", nodeIdx, idx);
-  MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx-1, 1, ga->dtype, ga->ga_win);
+  MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 
   MPI_Win_unlock( nodeIdx, ga->ga_win ); 
   *buf = malloc(sizeof(char) * strlen(tmp->name));

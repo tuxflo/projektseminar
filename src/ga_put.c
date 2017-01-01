@@ -21,19 +21,18 @@ int ga_put(GA ga, Entry *e)
 
   //rank   = (target - 1) /ga->chunk2;
 
-  printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx-1);
   MPE_Mutex_acquire(ga->lock_win,nodeIdx);
 
   /* Using lock_shared allows get accesses to proceed */
   MPI_Win_lock(MPI_LOCK_SHARED, nodeIdx, MPI_MODE_NOCHECK, ga->ga_win);
   //collision check
   Entry *tmp = malloc(sizeof(Entry));
-  MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx-1, 1, ga->dtype, ga->ga_win);
+  MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
   if(strlen(tmp->name) > 0)
     printf("collision! previous value: %s\n", tmp->name);
 
-  printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx-1);
-  MPI_Put(e, 1, ga->dtype, nodeIdx, idx-1, 1, ga->dtype, ga->ga_win);
+  //printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx);
+  MPI_Put(e, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 
   MPI_Win_unlock(nodeIdx, ga->ga_win);
 
