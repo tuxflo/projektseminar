@@ -9,8 +9,8 @@ int ga_create(MPI_Comm comm, int dim1, int dim2, GA *ga)
     void     *ga_win_ptr;
 
     const int nitems=2;
-    int          blocklengths[2] = {1,BUFFER_SIZE};
-    MPI_Datatype types[2] = {MPI_INT, MPI_CHAR};
+    int          blocklengths[2] = {BUFFER_SIZE,BUFFER_SIZE};
+    MPI_Datatype types[2] = {MPI_CHAR, MPI_CHAR};
     MPI_Datatype mpi_Entry_type;
     MPI_Aint     offsets[2];
 
@@ -22,12 +22,15 @@ int ga_create(MPI_Comm comm, int dim1, int dim2, GA *ga)
 
     /* Get a new structure */
     new_ga = (GA)malloc(sizeof(struct _GA));
-    if (!new_ga) return 0;
+    if (!new_ga)
+      return 0;
     /* Determine size of GA memory */
     MPI_Comm_size(comm, &size);
     chunk2 = dim2 / size;
     /* Require size to exactly divide dim2 */
-    if ((dim2 % size) != 0) MPI_Abort(comm, 1);
+    if ((dim2 % size) != 0)
+      MPI_Abort(comm, 1);
+
     MPI_Type_size(mpi_Entry_type, &sizeoftype);
     local_size = dim1 * chunk2 * sizeoftype;
 

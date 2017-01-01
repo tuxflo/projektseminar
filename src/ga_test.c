@@ -3,7 +3,7 @@
 #include "ga.h"
 #include <ctype.h>
 #include <string.h>
-
+#include "separate.h"
 
 int main(int argc, char **argv) {
   MPI_Init(NULL, NULL);
@@ -27,30 +27,31 @@ int main(int argc, char **argv) {
 
   GA global_array;
 
-  ga_create(MPI_COMM_WORLD, 10, 2, &global_array);
+  ga_create(MPI_COMM_WORLD, ELEMENT_COUNT, TABLE_COUNT, &global_array);
   Entry *received;
 
   MPI_Status status;
   char message[30];
+  Entry e;
+  strcpy(e.name, "deadbeef");
+  strcpy(e.id, "10001");
+  Entry e2;
+  strcpy(e2.name, "test");
+  strcpy(e2.id, "555");
   if(world_rank == 0) {
-    MPI_Recv(message, 30, MPI_CHAR, 1, 99, MPI_COMM_WORLD, &status);
-    printf("received: %s\n", message);
-    //einzeles GA Objekt, speicher anfang, speicher Ende, Ziel rank1, Ziel rank2 ... bei uns gleich, da Daten nur auf einem einzelnen Rank gespeichert werden sollen
-    ga_get(global_array, 1, 2, received);
-    printf("Buffer content: name: %s id: %d\n", received->name, received->id);
-    ga_get(global_array, 3, 1, received);
-    printf("Buffer content: name: %s id: %d\n", received->name, received->id);
-
+    //MPI_Recv(message, 30, MPI_CHAR, 1, 99, MPI_COMM_WORLD, &status);
+    //printf("received: %s\n", message);
+    ga_put(global_array, &e); 
+    ga_put(global_array, &e2); 
   }
   else {
-    Entry e;
-    e.id=42;
-    strcpy(e.name, "deadbeef");
-    ga_put(global_array, 1, 2, &e); 
-    e.id=23;
-    strcpy(e.name, "foobar");
-    ga_put(global_array, 1, 2, &e); 
-    MPI_Send("Hello getter", 20, MPI_CHAR, 0, 99, MPI_COMM_WORLD);
+    char **buf;
+    ga_get(global_array, e.id, buf);
+    printf("Get value: %s from key: %s\n", *buf, e.id);
+    ga_get(global_array, "10001", buf);
+    printf("Get value: %s from key: %s\n", *buf, e.id);
+    free(*buf);
+    //MPI_Send("Hello getter", 20, MPI_CHAR, 0, 99, MPI_COMM_WORLD);
   }
 
   // Finalize the MPI environment.
