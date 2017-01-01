@@ -3,7 +3,7 @@
 #include "hash.h"
 #include "separate.h"
 #include <string.h>
-int ga_get( GA ga, char *key, char **buf ) 
+char* ga_get( GA ga, char *key) 
 { 
   int rank; 
   int index = 2;
@@ -32,11 +32,14 @@ int ga_get( GA ga, char *key, char **buf )
 
   //printf("nodeIdx: %d, idx: %d\n", nodeIdx, idx);
   MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
+  printf("Getting entry: key: %s value: %s on node: %d at index: %d len: %d\n", tmp->id, tmp->name, nodeIdx, idx, strlen(tmp->name));
+  //*buf = malloc(sizeof(char) * strlen(tmp->name)+1);
+  /*if(*buf == NULL)*/
+    /*printf("Error with malloc!");*/
+  //strncpy(*buf, tmp->name, strlen(*buf)-1);
 
   MPI_Win_unlock( nodeIdx, ga->ga_win ); 
-  *buf = malloc(sizeof(char) * strlen(tmp->name));
-  strcpy(*buf, tmp->name);
 
   MPE_Mutex_release(ga->lock_win,nodeIdx);
-  return 0; 
+  return tmp->name; 
 } 

@@ -27,5 +27,5 @@ int MPE_Mutex_acquire(MPI_Win mutex_win, int num);
 int MPE_Mutex_create(MPI_Comm comm, int num, MPI_Win *mutex_win);
 //int ga_put(GA ga, int ilo, int target, Entry *e);
 int ga_put(GA ga, Entry *e);
-int ga_get(GA ga, char* key, char **buf);
+char* ga_get(GA ga, char* key);
 int ga_create(MPI_Comm comm, int dim1, int dim2, GA *ga);

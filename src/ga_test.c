@@ -42,7 +42,7 @@ int main(int argc, char **argv) {
   if(world_rank == 0) {
     //MPI_Recv(message, 30, MPI_CHAR, 1, 99, MPI_COMM_WORLD, &status);
     //printf("received: %s\n", message);
-    fp = fopen("../names.txt", "r");
+    fp = fopen("../names100.txt", "r");
     if (fp == NULL) {
         exit(EXIT_FAILURE);
     }
@@ -51,7 +51,6 @@ int main(int argc, char **argv) {
       if(insertCount >= TABLE_COUNT * ELEMENT_COUNT)
         break;
       Entry e;
-      printf("%s", line);
       if ((key = strsep(&line, ",")) == NULL) {
         printf("ERROR key:%s\n", key);
         continue;
@@ -65,13 +64,18 @@ int main(int argc, char **argv) {
       ga_put(global_array, &e); 
       insertCount++;
     }
+    MPI_Send("Work done!", 20, MPI_CHAR, 1, 99, MPI_COMM_WORLD);
   }
-  else {
-    //char **buf;
-    //ga_get(global_array, "1", buf);
+  if(world_rank == 1){
+    MPI_Recv(message, 30, MPI_CHAR, 0, 99, MPI_COMM_WORLD, &status);
+    printf("received: %s\n", message);
+    char *buf = ga_get(global_array, "100");
+    char out[BUFFER_SIZE];
+    strncpy(out, buf, 13);
+    out[strlen(out)-1] = '\0';
+    printf("Get value %s from key: %s\n", out, "100");
     //printf("Get value: %s from key: %s\n", *buf, "1");
     //free(*buf);
-    //MPI_Send("Hello getter", 20, MPI_CHAR, 0, 99, MPI_COMM_WORLD);
   }
 
   // Finalize the MPI environment.
