@@ -32,7 +32,8 @@ char* ga_get( GA ga, char *key)
 
   //printf("nodeIdx: %d, idx: %d\n", nodeIdx, idx);
   MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
-  printf("Getting entry: key: %s value: %s on node: %d at index: %d len: %d\n", tmp->id, tmp->name, nodeIdx, idx, strlen(tmp->name));
+
+  //printf("Getting entry: key: %s value: %s on node: %d at index: %d len: %d\n", tmp->id, tmp->name, nodeIdx, idx, strlen(tmp->name));
   //*buf = malloc(sizeof(char) * strlen(tmp->name)+1);
   /*if(*buf == NULL)*/
     /*printf("Error with malloc!");*/
@@ -41,5 +42,8 @@ char* ga_get( GA ga, char *key)
   MPI_Win_unlock( nodeIdx, ga->ga_win ); 
 
   MPE_Mutex_release(ga->lock_win,nodeIdx);
-  return tmp->name; 
+  if(strcmp(tmp->id, key) == 0)
+    return tmp->name; 
+  else
+    return "get_collision";
 } 
