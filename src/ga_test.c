@@ -72,7 +72,7 @@ int readAndPut(char* file, int *inserted, int *collisions, int *updated, GA glob
   FILE *fp;
   char *line = NULL, *key, *value;
   size_t len = 0;
-  ssize_t read;
+  size_t read;
   int ins = 0;
   int col = 0;
   int upd = 0;
