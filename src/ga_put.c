@@ -14,7 +14,7 @@ int ga_put(GA ga, Entry *e)
 
   separate(keyHash, &localPart, &nodePart);
   uint32_t idx = localHash(localPart, ELEMENT_COUNT);
-  uint8_t nodeIdx = nodeHash(nodePart, TABLE_COUNT);
+  uint8_t nodeIdx = nodeHash(nodePart, ga->dim2);
 
   /* pass the size of the struct entries: 1 int, BUFFER_SIZE chars */
   MPI_Aint disp;
@@ -26,7 +26,7 @@ int ga_put(GA ga, Entry *e)
   //collision check
   MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 
-  //printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx);
+  printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx);
   e->name[strlen(e->name)-1] = '\0'; 
   MPI_Put(e, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 

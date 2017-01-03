@@ -3,7 +3,6 @@
 #include <stdlib.h>
 
 #define BUFFER_SIZE 256
-#define TABLE_COUNT 4
 #define ELEMENT_COUNT 10000
 
 /* We make GA a pointer to this structure so that users always

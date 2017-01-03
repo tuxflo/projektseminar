@@ -28,7 +28,7 @@ int main(int argc, char **argv) {
 
   GA global_array;
 
-  ga_create(MPI_COMM_WORLD, ELEMENT_COUNT, TABLE_COUNT, &global_array);
+  ga_create(MPI_COMM_WORLD, ELEMENT_COUNT, world_size, &global_array);
   Entry *received;
 
   MPI_Status status;
@@ -40,14 +40,14 @@ int main(int argc, char **argv) {
   //Do work!
   if(world_rank == 0) {
     readAndPut("../names100.txt", &insertCount, &collisionCount, &updatedCount, global_array);
-    MPI_Send("Work done!", 20, MPI_CHAR, 1, 99, MPI_COMM_WORLD);
+    //MPI_Send("Work done!", 20, MPI_CHAR, 1, 99, MPI_COMM_WORLD);
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
   }
   if(world_rank == 1){
-    MPI_Recv(message, 30, MPI_CHAR, 0, 99, MPI_COMM_WORLD, &status);
-    printf("received: %s\n", message);
+    //MPI_Recv(message, 30, MPI_CHAR, 0, 99, MPI_COMM_WORLD, &status);
+    //printf("received: %s\n", message);
     int a, b;
-    for(a=0; a<175; a++)
+    for(a=0; a<15; a++)
     {
       char key[10];
       sprintf(key, "%d", a);

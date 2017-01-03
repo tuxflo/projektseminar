@@ -14,11 +14,9 @@ char* ga_get( GA ga, char *key)
   Entry *tmp = malloc(sizeof(Entry));
 
   separate(keyHash, &localPart, &nodePart);
-  int idx = localHash(localPart, ELEMENT_COUNT);
-  int nodeIdx = nodeHash(nodePart, TABLE_COUNT);
 
-  uint8_t nodeKey = nodeHash(nodePart, TABLE_COUNT);
-  uint32_t localKey = localHash(localPart, ELEMENT_COUNT);
+  uint8_t nodeIdx = nodeHash(nodePart, ga->dim2);
+  uint32_t idx = localHash(localPart, ELEMENT_COUNT);
   MPI_Aint disp; 
 
   rank   = (target - 1) /ga->chunk2; 
