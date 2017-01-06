@@ -39,7 +39,8 @@ int main(int argc, char **argv) {
   char message[30];
   //Do work!
   if(world_rank == 0) {
-    readAndPut("../names100.txt", &insertCount, &collisionCount, &updatedCount, global_array);
+    readAndPut("names100.txt", &insertCount, &collisionCount, &updatedCount, global_array);
+    printf("after create\n");
     //MPI_Send("Work done!", 20, MPI_CHAR, 1, 99, MPI_COMM_WORLD);
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
   }
@@ -59,7 +60,7 @@ int main(int argc, char **argv) {
     //free(*buf);
   }
   if(world_rank == 2) {
-    readAndPut("../names101.txt", &insertCount, &collisionCount, &updatedCount, global_array);
+    readAndPut("names101.txt", &insertCount, &collisionCount, &updatedCount, global_array);
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
   }
 
@@ -78,6 +79,7 @@ int readAndPut(char* file, int *inserted, int *collisions, int *updated, GA glob
   int upd = 0;
   fp = fopen(file, "r");
   if (fp == NULL) {
+    printf("error opening file\n");
     exit(EXIT_FAILURE);
   }
 
