@@ -7,13 +7,13 @@
 #include "ga.h"
 #include "separate.h"
 
-static const int EXPERIMENT_CYCLE = 5000;
-
-int prepareGlobalArray(char* file, int *inserted, int *collisions, int *updated,
-  char addressBook[][BUFFER_SIZE], GA gloabal_array);
+#define EXPERIMENT_CYCLE 5000
 
 int mpiError, mpiErrorLength;
 char mpiErrorMessage[MPI_MAX_ERROR_STRING];
+
+int prepareGlobalArray(char* file, int *inserted, int *collisions, int *updated,
+  char addressBook[][BUFFER_SIZE], GA gloabal_array);
 
 int main(int argc, char **argv) {
   // Configure MPI error handling
@@ -95,8 +95,8 @@ int main(int argc, char **argv) {
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
 
     timeDiff = ((double) (end - start)) / CLOCKS_PER_SEC;
-    printf("Time to insert %d records into our global array.\nArray size: %d\nWorld size: %d",
-      timeDiff, ELEMENT_COUNT, world_size);
+    printf("Time to insert %d records into our global array: %f\nArray size: %d\nWorld size: %d",
+      EXPERIMENT_CYCLE, timeDiff, ELEMENT_COUNT, world_size);
   }
 
   /*
