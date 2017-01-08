@@ -1,5 +1,6 @@
 #include "mpi.h"
 extern int MPE_MUTEX_KEYVAL;
+// int num = nodeIdx
 int MPE_Mutex_acquire(MPI_Win mutex_win, int num) {
   int      mone = -1, one=1, oldval;
   int      lrank, flag, size, *attrval;

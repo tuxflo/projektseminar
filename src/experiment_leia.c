@@ -9,21 +9,21 @@
 
 #define EXPERIMENT_CYCLE 5000
 
-int mpiError, mpiErrorLength;
-char mpiErrorMessage[MPI_MAX_ERROR_STRING];
-
 int prepareGlobalArray(char* file, int *inserted, int *collisions, int *updated,
   char addressBook[][BUFFER_SIZE], GA gloabal_array);
 
 int main(int argc, char **argv) {
+  MPI_Init(NULL, NULL);
   // Configure MPI error handling
+  int mpiError, mpiErrorLength;
+  char mpiErrorMessage[MPI_MAX_ERROR_STRING];
   mpiError = MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN);
 
-  MPI_Init(NULL, NULL);
   if (mpiError != MPI_SUCCESS) {
       MPI_Error_string(mpiError, mpiErrorMessage, &mpiErrorLength);
       printf("%.*s\n", mpiErrorLength, mpiErrorMessage);
       MPI_Abort(MPI_COMM_WORLD, 1);
+      exit(EXIT_FAILURE);
   }
 
   int world_size;
@@ -32,12 +32,14 @@ int main(int argc, char **argv) {
       MPI_Error_string(mpiError, mpiErrorMessage, &mpiErrorLength);
       printf("%.*s\n", mpiErrorLength, mpiErrorMessage);
       MPI_Abort(MPI_COMM_WORLD, 1);
+      exit(EXIT_FAILURE);
   }
 
   if (ELEMENT_COUNT % world_size) {
     printf("Element count %d modulo world size %d must be zero.\n",
       ELEMENT_COUNT, world_size);
       MPI_Abort(MPI_COMM_WORLD, 1);
+      exit(EXIT_FAILURE);
   }
 
   int world_rank;
@@ -46,6 +48,7 @@ int main(int argc, char **argv) {
       MPI_Error_string(mpiError, mpiErrorMessage, &mpiErrorLength);
       printf("%.*s\n", mpiErrorLength, mpiErrorMessage);
       MPI_Abort(MPI_COMM_WORLD, 1);
+      exit(EXIT_FAILURE);
   }
 
   // Get the name of the current processor
@@ -56,6 +59,7 @@ int main(int argc, char **argv) {
       MPI_Error_string(mpiError, mpiErrorMessage, &mpiErrorLength);
       printf("%.*s\n", mpiErrorLength, mpiErrorMessage);
       MPI_Abort(MPI_COMM_WORLD, 1);
+      exit(EXIT_FAILURE);
   }
 
   // Print a hello world message
@@ -71,10 +75,7 @@ int main(int argc, char **argv) {
     MPI_Abort(MPI_COMM_WORLD, 1);
   }
 
-  Entry *received;
-  MPI_Status status;
   char addressBook[ELEMENT_COUNT][BUFFER_SIZE];
-
   int insertCount = 0;
   int collisionCount = 0;
   int updatedCount = 0;
@@ -98,31 +99,9 @@ int main(int argc, char **argv) {
     printf("Time to insert %d records into our global array: %f\nArray size: %d\nWorld size: %d",
       EXPERIMENT_CYCLE, timeDiff, ELEMENT_COUNT, world_size);
   }
-
-  /*
-  if(world_rank == 1){
-    //MPI_Recv(message, 30, MPI_CHAR, 0, 99, MPI_COMM_WORLD, &status);
-    //printf("received: %s\n", message);
-    int a, b;
-    for(a=0; a<15; a++)
-    {
-      char key[10];
-      sprintf(key, "%d", a);
-      char *buf = ga_get(global_array, key);
-      //if(strlen(buf) > 0)
-        //printf("Get value %s from key: %s\n", buf, key);
-    }
-    //printf("Get value: %s from key: %s\n", *buf, "1");
-    //free(*buf);
-  }
-  if(world_rank == 2) {
-    //readAndPut("names101.txt", &insertCount, &collisionCount, &updatedCount, global_array);
-    printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
-  }
-  */
   // Finalize the MPI environment.
   MPI_Finalize();
-  return 0;
+  exit(EXIT_SUCCESS);
 }
 
 int prepareGlobalArray(char* file, int *inserted, int *collisions, int *updated, char globalAddressBook[][BUFFER_SIZE], GA global_array) {
