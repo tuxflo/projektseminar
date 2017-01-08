@@ -4,6 +4,7 @@
 #include <string.h>
 #include <stdio.h>
 #include "separate.h"
+
 int ga_put(GA ga, Entry *e)
 {
   int rank;
@@ -27,7 +28,7 @@ int ga_put(GA ga, Entry *e)
   MPI_Get(tmp, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 
   printf("Saving entry: key: %s value: %s on node: %d at index: %d\n", e->id, e->name, nodeIdx, idx);
-  e->name[strlen(e->name)-1] = '\0'; 
+  e->name[strlen(e->name)-1] = '\0';
   MPI_Put(e, 1, ga->dtype, nodeIdx, idx, 1, ga->dtype, ga->ga_win);
 
   MPI_Win_unlock(nodeIdx, ga->ga_win);
