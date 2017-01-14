@@ -39,7 +39,7 @@ int main(int argc, char **argv) {
   char message[30];
   //Do work!
   if(world_rank == 0) {
-    readAndPut("names100.txt", &insertCount, &collisionCount, &updatedCount, global_array);
+    readAndPut("names.txt", &insertCount, &collisionCount, &updatedCount, global_array);
     printf("after create\n");
     //MPI_Send("Work done!", 20, MPI_CHAR, 1, 99, MPI_COMM_WORLD);
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
@@ -52,7 +52,7 @@ int main(int argc, char **argv) {
     {
       char key[10];
       sprintf(key, "%d", a);
-      char *buf = ga_get(global_array, key);
+      //char *buf = ga_get(global_array, key);
       //if(strlen(buf) > 0)
         //printf("Get value %s from key: %s\n", buf, key);
     }
@@ -60,12 +60,13 @@ int main(int argc, char **argv) {
     //free(*buf);
   }
   if(world_rank == 2) {
-    readAndPut("names101.txt", &insertCount, &collisionCount, &updatedCount, global_array);
+    readAndPut("names100.txt", &insertCount, &collisionCount, &updatedCount, global_array);
     printf("inserted values: %d collisions: %d updated values %d\n", insertCount, collisionCount, updatedCount);
   }
+  MPI_Barrier(MPI_COMM_WORLD);
 
   // Finalize the MPI environment.
-  MPI_Finalize();
+  //MPI_Finalize();
   return 0;
 }
 
