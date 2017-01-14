@@ -21,8 +21,8 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
     /* Specify ordering of accumulate operations (this is the
        default behavior in MPI-3) */
     MPI_Info mpi_info;
-    MPI_CALL_AND_CHECK(MPI_Info_create(&mpi_info));
-    MPI_CALL_AND_CHECK(MPI_Info_set(mpi_info, "accumulate_ordering", "rar,raw,war,waw"));
+    _MPI_CHECK_(MPI_Info_create(&mpi_info));
+    _MPI_CHECK_(MPI_Info_set(mpi_info, "accumulate_ordering", "rar,raw,war,waw"));
 
     // Creation of derived MPI data type
     const int nitems = 2;
@@ -34,19 +34,19 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
     offsets[0] = offsetof(Entry, key);
     offsets[1] = offsetof(Entry, value);
 
-    MPI_CALL_AND_CHECK(MPI_Type_create_struct(nitems, block_lengths, offsets, dtypes, &mpi_entry_type));
-    MPI_CALL_AND_CHECK(MPI_Type_commit(&mpi_entry_type));
+    _MPI_CHECK_(MPI_Type_create_struct(nitems, block_lengths, offsets, dtypes, &mpi_entry_type));
+    _MPI_CHECK_(MPI_Type_commit(&mpi_entry_type));
 
     // Calculate MPI window size
     int size_of_type;
     MPI_Aint la_size;
-    MPI_CALL_AND_CHECK(MPI_Type_size(mpi_entry_type, &size_of_type));
+    _MPI_CHECK_(MPI_Type_size(mpi_entry_type, &size_of_type));
     la_size = array_dim * size_of_type;
 
     /* Allocate memory and create window */
     void *la_win_ptr;
-    MPI_CALL_AND_CHECK(MPI_Win_allocate(la_size, size_of_type, mpi_info, comm, &la_win_ptr, &new_la->la_win));
-    MPI_CALL_AND_CHECK(MPI_Info_free(&mpi_info));
+    _MPI_CHECK_(MPI_Win_allocate(la_size, size_of_type, mpi_info, comm, &la_win_ptr, &new_la->la_win));
+    _MPI_CHECK_(MPI_Info_free(&mpi_info));
 
     /* Create critical section window */
     int ret;
@@ -80,10 +80,10 @@ int la_put(LA la, Entry *e) {
     }
 
     // Using lock_shared allows get accesses to proceed
-    MPI_CALL_AND_CHECK(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
 
     // Collision check
-    MPI_CALL_AND_CHECK(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+    _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
     if (strlen(tmp->value) > 0) {
         /* printf("Collision! on node %d on index %d.\n\t
             Latest entry: key = %s,  value = %s\n\t
@@ -102,10 +102,10 @@ int la_put(LA la, Entry *e) {
 
     if (ret != 1) {
         e->value[strlen(e->value)-1] = '\0';
-        MPI_CALL_AND_CHECK(MPI_Put(e, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+        _MPI_CHECK_(MPI_Put(e, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
     }
 
-    MPI_CALL_AND_CHECK(MPI_Win_unlock(node, la->la_win));
+    _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
     ret = mutex_release(la->lock_win, node, idx);
     if (ret != 0) {
@@ -133,9 +133,9 @@ char *la_get(LA la, char *key) {
     }
 
     // Using lock_shared allows get accesses to proceed
-    MPI_CALL_AND_CHECK(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
-    MPI_CALL_AND_CHECK(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
-    MPI_CALL_AND_CHECK(MPI_Win_unlock(node, la->la_win));
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
+    _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+    _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
     ret = mutex_release(la->lock_win, node, idx);
     if (ret != 0) {

@@ -22,17 +22,17 @@ int main(int argc, char **argv) {
     int ret;
     MPI_Init(NULL, NULL);
     // Configure MPI error handling
-    MPI_CALL_AND_CHECK(MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN));
+    _MPI_CHECK_(MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN));
 
     int world_size;
-    MPI_CALL_AND_CHECK(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
+    _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
 
     int world_rank;
-    MPI_CALL_AND_CHECK(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
+    _MPI_CHECK_(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
 
     int name_len;
     char processor_name[MPI_MAX_PROCESSOR_NAME];
-    MPI_CALL_AND_CHECK(MPI_Get_processor_name(processor_name, &name_len));
+    _MPI_CHECK_(MPI_Get_processor_name(processor_name, &name_len));
 
     // Print off a hello world message
     printf("Hello world from processor %s, rank %d out of %d processors.\n",
@@ -69,7 +69,7 @@ int main(int argc, char **argv) {
          }
      }
 
-     MPI_CALL_AND_CHECK(MPI_Barrier(MPI_COMM_WORLD));
+     _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
      MPI_Barrier(MPI_Finalize());
      exit(EXIT_SUCCESS);
 }

@@ -2,7 +2,7 @@
 #define MPI_Error_h
 #include <mpi.h>
 
-#define MPI_CALL_AND_CHECK(MPI_FUNC)do{\
+#define _MPI_CHECK_(MPI_FUNC)do{\
 int call_ret = MPI_FUNC;\
 if (call_ret != MPI_SUCCESS)\
     {\
