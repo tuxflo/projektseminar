@@ -2,7 +2,7 @@
 #define SEPARATE_H
 #include <stdint.h>
 
-uint32_t createMask(uint32_t a, uint32_t b);
+uint32_t create_mask(uint32_t a, uint32_t b);
+void separate(uint32_t global_key, uint32_t* local_key, uint8_t* node_key);
 
-void separate(uint32_t globalKey, uint32_t* localKey, uint8_t* nodeKey);
 #endif

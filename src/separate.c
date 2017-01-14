@@ -1,7 +1,8 @@
 #include "separate.h"
 #include <ctype.h>
 #include <string.h>
-uint32_t createMask(uint32_t a, uint32_t b) {
+
+uint32_t create_mask(uint32_t a, uint32_t b) {
    uint32_t mask = 0;
    for (uint32_t i=a; i<=b; i++) {
        mask |= 1 << i;
@@ -9,15 +10,15 @@ uint32_t createMask(uint32_t a, uint32_t b) {
    return mask;
 }
 
-void separate(uint32_t globalKey, uint32_t* localKey, uint8_t* nodeKey) {
+void separate(uint32_t global_key, uint32_t* local_key, uint8_t* node_key) {
     uint32_t mask;
 
-    mask = createMask(0, 7);
-    uint8_t node = (uint8_t) globalKey & mask;
+    mask = create_mask(0, 7);
+    uint8_t node = (uint8_t) global_key & mask;
 
-    mask = createMask(8, 31);
-    uint32_t local = globalKey & mask;
+    mask = create_mask(8, 31);
+    uint32_t local = global_key & mask;
 
-    *localKey = local;
-    *nodeKey = node;
+    *local_key = local;
+    *node_key = node;
 }

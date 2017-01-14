@@ -1,10 +1,11 @@
 #ifndef Entry_h
 #define Entry_h
+#include "constants.h"
 
-#define BUFFER_SIZE 256
-
+// This is the structure of e single hashmap entry.
 typedef struct Entry {
-        uint32_t key;
-        char value[BUFFER_SIZE];
+    char key[BUFFER_SIZE];
+    char value[BUFFER_SIZE];
 } Entry;
+
 #endif
