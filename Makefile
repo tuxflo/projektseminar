@@ -1,13 +1,13 @@
-all: global run
+all: main_test
 
 clean:
-	rm -f bin/ga_test
+	rm -f bin/*
 
-run:
-	mpirun -np 4 --hostfile machines.txt bin/ga_test
+run_main_test:
+	mpiexec -n 4 -f machines.txt bin/main_test
 
-global:
-	mpicc -std=c99 -o bin/ga_test src/ga_test.c src/ga_create.c src/ga_mutex1.c src/mutex-create.c src/ga_put.c src/mutex-acquire.c src/mutex-release.c src/ga_get.c src/mcs-lock.c src/hash.c src/separate.c
+main_test: compile_main_test run_main_test
 
-leia:
-	mpicc -std=c99 -o bin/leia src/experiment_leia.c src/ga_create.c src/ga_mutex1.c src/mutex-create.c src/ga_put.c src/mutex-acquire.c src/mutex-release.c src/ga_get.c src/mcs-lock.c src/hash.c src/separate.c
+compile_main_test:
+	mpicc -o bin/main_test src/main_test.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c
+

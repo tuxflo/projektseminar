@@ -3,11 +3,12 @@
 #include <string.h>
 
 uint32_t create_mask(uint32_t a, uint32_t b) {
-   uint32_t mask = 0;
-   for (uint32_t i=a; i<=b; i++) {
-       mask |= 1 << i;
-   }
-   return mask;
+    uint32_t i, mask = 0;
+	
+    for (i=a; i<=b; i++) {
+        mask |= 1 << i;
+    }
+    return mask;
 }
 
 void separate(uint32_t global_key, uint32_t* local_key, uint8_t* node_key) {
