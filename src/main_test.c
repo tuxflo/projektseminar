@@ -70,7 +70,7 @@ int main(int argc, char **argv) {
      }
 
      _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
-     MPI_Barrier(MPI_Finalize());
+     MPI_Finalize();
      exit(EXIT_SUCCESS);
 }
 
@@ -81,7 +81,7 @@ int job_zero(LA local_array, int world_rank) {
     int update_count = 0;
     char message[30];
 
-    ret = read_and_put("../test_files/name.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put("./test_files/names.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;

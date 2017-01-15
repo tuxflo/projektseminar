@@ -13,10 +13,6 @@ void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *
 
 int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
     LA new_la;
-    new_la = (LA)malloc(sizeof(struct _LA));
-    if (new_la == NULL) {
-        printf("Error during memory allocation for new_la.\n");
-    }
 
     /* Specify ordering of accumulate operations (this is the
        default behavior in MPI-3) */
@@ -36,6 +32,10 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
 
     _MPI_CHECK_(MPI_Type_create_struct(nitems, block_lengths, offsets, dtypes, &mpi_entry_type));
     _MPI_CHECK_(MPI_Type_commit(&mpi_entry_type));
+    new_la = (LA)malloc(sizeof(struct _LA));
+    if (new_la == NULL) {
+        printf("Error during memory allocation for new_la.\n");
+    }
 
     // Calculate MPI window size
     int size_of_type;
@@ -107,8 +107,8 @@ int la_put(LA la, Entry *e) {
 
     _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
-    ret = mutex_release(la->lock_win, node, idx);
-    if (ret != 0) {
+    int check = mutex_release(la->lock_win, node, idx);
+    if (check != 0) {
         printf("Error during mutex_release for idx %d on node %d.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
