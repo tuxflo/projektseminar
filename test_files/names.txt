@@ -2173,8 +2173,6 @@
 2173, dreamy_meitner
 2174, prickly_snyder
 2175, gloomy_mcnulty
-2176, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 2177, gloomy_ramanujan
 2178, ecstatic_curie
 2179, thirsty_leakey
@@ -7312,8 +7310,6 @@
 7311, angry_fermat
 7312, evil_archimedes
 7313, boring_perlman
-7314, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 7315, jovial_morse
 7316, prickly_blackwell
 7317, jolly_stallman
@@ -10595,8 +10591,6 @@
 10593, elegant_engelbart
 10594, cocky_panini
 10595, pensive_albattani
-10596, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 10597, berserk_kilby
 10598, adoring_newton
 10599, silly_sinoussi
@@ -18680,8 +18674,6 @@
 18677, distracted_saha
 18678, thirsty_visvesvaraya
 18679, happy_jepsen
-18680, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 18681, focused_elion
 18682, serene_almeida
 18683, sleepy_stallman
@@ -23380,8 +23372,6 @@
 23376, goofy_borg
 23377, condescending_keller
 23378, goofy_bardeen
-23379, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 23380, elegant_banach
 23381, high_engelbart
 23382, condescending_bhaskara
@@ -23458,8 +23448,6 @@
 23453, naughty_hugle
 23454, suspicious_einstein
 23455, jovial_chandrasekhar
-23456, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 23457, naughty_wright
 23458, berserk_borg
 23459, kickass_cori
@@ -26135,8 +26123,6 @@
 26129, fervent_yalow
 26130, prickly_wing
 26131, modest_bardeen
-26132, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 26133, loving_tesla
 26134, compassionate_bartik
 26135, jolly_ptolemy
@@ -27971,8 +27957,6 @@
 27965, evil_pike
 27966, condescending_elion
 27967, elegant_torvalds
-27968, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 27969, adoring_shaw
 27970, evil_bhaskara
 27971, tender_shaw
@@ -48784,8 +48768,6 @@
 48781, furious_newton
 48782, hungry_boyd
 48783, mad_ramanujan
-48784, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 48785, boring_bell
 48786, trusting_rosalind
 48787, silly_brahmagupta
@@ -49143,8 +49125,6 @@
 49139, dreamy_keller
 49140, happy_wilson
 49141, high_almeida
-49142, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 49143, condescending_franklin
 49144, gloomy_torvalds
 49145, desperate_galileo
@@ -50454,8 +50434,6 @@
 50449, sharp_bhabha
 50450, loving_liskov
 50451, stupefied_visvesvaraya
-50452, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 50453, thirsty_brattain
 50454, cocky_heisenberg
 50455, desperate_colden
@@ -53497,8 +53475,6 @@
 53491, gloomy_lalande
 53492, stupefied_carson
 53493, naughty_engelbart
-53494, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 53495, stupefied_pike
 53496, serene_feynman
 53497, thirsty_rosalind
@@ -54726,8 +54702,6 @@
 54719, cranky_payne
 54720, trusting_stallman
 54721, furious_allen
-54722, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 54723, admiring_colden
 54724, condescending_elion
 54725, berserk_leakey
@@ -58087,8 +58061,6 @@
 58081, loving_meninsky
 58082, admiring_sinoussi
 58083, stoic_ptolemy
-58084, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 58085, sleepy_hawking
 58086, silly_goldstine
 58087, silly_wescoff
@@ -64682,8 +64654,6 @@
 64675, cocky_archimedes
 64676, reverent_brattain
 64677, serene_panini
-64678, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 64679, nostalgic_lalande
 64680, romantic_kilby
 64681, happy_kilby
@@ -66823,8 +66793,6 @@
 66816, cranky_shaw
 66817, hopeful_aryabhata
 66818, drunk_hamilton
-66819, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 66820, romantic_spence
 66821, sick_boyd
 66822, boring_shaw
@@ -73769,8 +73737,6 @@
 73762, pensive_cray
 73763, reverent_rosalind
 73764, loving_wilson
-73765, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 73766, focused_lichterman
 73767, tender_newton
 73768, hopeful_ardinghelli
@@ -81137,8 +81103,6 @@
 81130, focused_thompson
 81131, focused_carson
 81132, tender_swanson
-81133, <br />
-<b>Fatal error</b>:  Allowed memory size of 134217728 bytes exhausted (tried to allocate 130968 bytes) in <b>/home/stormarc/www/frightanic.com/goodies_content/docker-names.php</b> on line <b>432</b><br />
 81134, boring_fermi
 81135, admiring_lamarr
 81136, romantic_shockley
