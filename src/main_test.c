@@ -41,7 +41,7 @@ int main(int argc, char **argv) {
      LA local_array;
      ret = la_create(MPI_COMM_WORLD, ELEMENT_COUNT, world_size, &local_array);
      if (ret != 0) {
-         printf("Erro during creation of local array.\n");
+         printf("Erro during creation of local array on rank %d.\n", world_rank);
          MPI_Abort(MPI_COMM_WORLD, 1);
          exit(EXIT_FAILURE);
      }
@@ -52,7 +52,15 @@ int main(int argc, char **argv) {
          if (ret != 0) {
              printf("Something went wrong during job zero!\n");
          }
-     } else if (world_rank == 1) {
+     } else {
+         ret = default_job(local_array, world_rank);
+         if (ret != 0) {
+             printf("Something went wrong during the default job!\n");
+         }
+     }
+     
+     /*
+     else if (world_rank == 1) {
          ret = job_one(local_array, world_rank);
          if (ret != 0) {
              printf("Something went wrong during job one!\n");
@@ -68,9 +76,10 @@ int main(int argc, char **argv) {
              printf("Something went wrong during the default job!\n");
          }
      }
+     */
 
      _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
-     MPI_Finalize();
+     _MPI_CHECK_(MPI_Finalize());
      exit(EXIT_SUCCESS);
 }
 
@@ -81,6 +90,7 @@ int job_zero(LA local_array, int world_rank) {
     int update_count = 0;
     char message[30];
 
+    printf("I am rank %d and I'm on job zero.\n", world_rank);
     ret = read_and_put("./test_files/names.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
@@ -92,15 +102,15 @@ int job_zero(LA local_array, int world_rank) {
 }
 
 int job_one(LA local_array, int world_rank) {
-    printf("I am rank %d and I do job one.\n", world_rank);
+    printf("I am rank %d and I'm on job one.\n", world_rank);
     return 0;
 }
 int job_two(LA local_array, int world_rank) {
-    printf("I am rank %d and I do hob two.\n", world_rank);
+    printf("I am rank %d and I'm on job two.\n", world_rank);
     return 0;
 }
 int default_job(LA local_array, int world_rank){
-    printf("I am rank %d and I do the default job.\n", world_rank);
+    printf("I am rank %d and I'm on the default job.\n", world_rank);
     return 0;
 }
 

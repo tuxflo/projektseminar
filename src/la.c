@@ -21,11 +21,11 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
     _MPI_CHECK_(MPI_Info_set(mpi_info, "accumulate_ordering", "rar,raw,war,waw"));
 
     // Creation of derived MPI data type
-    const int nitems = 2;
-    int block_lengths[2] = { BUFFER_SIZE, BUFFER_SIZE };
-    MPI_Datatype dtypes[2] = { MPI_CHAR, MPI_CHAR };
-    MPI_Datatype mpi_entry_type;
-    MPI_Aint offsets[2];
+    const int       nitems = 2;
+    int             block_lengths[2] = { BUFFER_SIZE, BUFFER_SIZE };
+    MPI_Datatype    dtypes[2] = { MPI_CHAR, MPI_CHAR };
+    MPI_Datatype    mpi_entry_type;
+    MPI_Aint        offsets[2];
 
     offsets[0] = offsetof(Entry, key);
     offsets[1] = offsetof(Entry, value);
@@ -56,24 +56,24 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
     }
 
     /* Save other data and return */
-    new_la->mpi_datatype = mpi_entry_type;
-    new_la->datatype_size = sizeof(Entry);
-    new_la->local_array_size = array_dim;
-    new_la->world_size = w_size;
+    new_la->mpi_datatype        = mpi_entry_type;
+    new_la->datatype_size       = sizeof(Entry);
+    new_la->local_array_size    = array_dim;
+    new_la->world_size          = w_size;
     *la  = new_la;
     return 0;
 }
 
 int la_put(LA la, Entry *e) {
-    int ret;
+    int ret, check;
     uint32_t node, idx;
     calculate_hash_values(la->world_size, e->key, &node, &idx);
 
     Entry *tmp = malloc(sizeof(Entry));
 
     // Accquireing mutex
-    ret = mutex_acquire(la->lock_win, node, idx);
-    if (ret != 0) {
+    check = mutex_acquire(la->lock_win, node, idx);
+    if (check != 0) {
         printf("Error during mutex_accquire for idx %d on node %d.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
@@ -107,7 +107,7 @@ int la_put(LA la, Entry *e) {
 
     _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
-    int check = mutex_release(la->lock_win, node, idx);
+    check = mutex_release(la->lock_win, node, idx);
     if (check != 0) {
         printf("Error during mutex_release for idx %d on node %d.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
@@ -154,8 +154,8 @@ char *la_get(LA la, char *key) {
 }
 
 void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *idx) {
-    uint8_t node_part;
-    uint32_t local_part, key_hash;
+    uint8_t     node_part;
+    uint32_t    local_part, key_hash;
     key_hash = jenkins_hash((uint8_t*)key, strlen(key));
     separate(key_hash, &local_part, &node_part);
     *node = node_hash(node_part, world_size);

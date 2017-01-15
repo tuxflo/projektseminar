@@ -4,7 +4,7 @@ clean:
 	rm -f bin/*
 
 run_main_test:
-	mpiexec -n 4 -f machines.txt bin/main_test
+	mpiexec -n 10 -f machines.txt bin/main_test
 
 main_test: compile_main_test run_main_test
 
