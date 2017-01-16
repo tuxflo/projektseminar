@@ -1,0 +1,498 @@
+- Schrieben von 99970 Datensätzen
+- 1 schreibender Prozess
+- World_Size variable
+
+--> Verhalten von Collisionen beachten
+
+##### ELEMENT_COUNT = 30000
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 4 -f machines.txt bin/main_test 
+Hello world from processor isys103, rank 2 out of 4 processors.
+Hello world from processor isys101, rank 0 out of 4 processors.
+Hello world from processor isys102, rank 1 out of 4 processors.
+Hello world from processor isys104, rank 3 out of 4 processors.
+I am rank 0 and I'm on job zero.
+I am rank 3 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 15515, collisions: 84454, updated values 0.
+        CPU-Time: 46.033614 seconds, global hashmap size: 120000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 5 -f machines.txt bin/main_test
+Hello world from processor isys101, rank 0 out of 5 processors.
+Hello world from processor isys102, rank 1 out of 5 processors.
+Hello world from processor isys104, rank 3 out of 5 processors.
+Hello world from processor isys103, rank 2 out of 5 processors.
+Hello world from processor isys105, rank 4 out of 5 processors.
+I am rank 0 and I'm on job zero.
+I am rank 3 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 19045, collisions: 80924, updated values 0.
+        CPU-Time: 49.201679 seconds, global hashmap size: 150000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 6 -f machines.txt bin/main_test  
+Hello world from processor isys102, rank 1 out of 6 processors.
+Hello world from processor isys103, rank 2 out of 6 processors.
+Hello world from processor isys104, rank 3 out of 6 processors.
+Hello world from processor isys105, rank 4 out of 6 processors.
+Hello world from processor isys101, rank 0 out of 6 processors.
+Hello world from processor isys106, rank 5 out of 6 processors.
+I am rank 1 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 2 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 22023, collisions: 77946, updated values 0.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 7 -f machines.txt bin/main_test  
+Hello world from processor isys102, rank 1 out of 7 processors.
+Hello world from processor isys104, rank 3 out of 7 processors.
+Hello world from processor isys105, rank 4 out of 7 processors.
+Hello world from processor isys106, rank 5 out of 7 processors.
+Hello world from processor isys103, rank 2 out of 7 processors.
+Hello world from processor isys101, rank 0 out of 7 processors.
+Hello world from processor isys107, rank 6 out of 7 processors.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 6 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 24991, collisions: 74978, updated values 0.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 8 -f machines.txt bin/main_test  
+Hello world from processor isys104, rank 3 out of 8 processors.
+Hello world from processor isys103, rank 2 out of 8 processors.
+Hello world from processor isys105, rank 4 out of 8 processors.
+Hello world from processor isys102, rank 1 out of 8 processors.
+Hello world from processor isys108, rank 7 out of 8 processors.
+Hello world from processor isys101, rank 0 out of 8 processors.
+Hello world from processor isys107, rank 6 out of 8 processors.
+Hello world from processor isys106, rank 5 out of 8 processors.
+I am rank 0 and I'm on job zero.
+I am rank 1 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 27263, collisions: 72706, updated values 0.
+        CPU-Time: 59.163272 seconds, global hashmap size: 240000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 9 -f machines.txt bin/main_test 
+Hello world from processor isys104, rank 3 out of 9 processors.
+Hello world from processor isys108, rank 7 out of 9 processors.
+Hello world from processor isys102, rank 1 out of 9 processors.
+Hello world from processor isys107, rank 6 out of 9 processors.
+Hello world from processor isys101, rank 0 out of 9 processors.
+Hello world from processor isys103, rank 2 out of 9 processors.
+Hello world from processor isys109, rank 8 out of 9 processors.
+Hello world from processor isys106, rank 5 out of 9 processors.
+Hello world from processor isys105, rank 4 out of 9 processors.
+I am rank 6 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 1 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 29689, collisions: 70280, updated values 0.
+        CPU-Time: 60.195491 seconds, global hashmap size: 270000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 10 -f machines.txt bin/main_test 
+Hello world from processor isys104, rank 3 out of 10 processors.
+Hello world from processor isys109, rank 8 out of 10 processors.
+Hello world from processor isys102, rank 1 out of 10 processors.
+Hello world from processor isys105, rank 4 out of 10 processors.
+Hello world from processor isys106, rank 5 out of 10 processors.
+Hello world from processor isys108, rank 7 out of 10 processors.
+Hello world from processor isys101, rank 0 out of 10 processors.
+Hello world from processor isys103, rank 2 out of 10 processors.
+Hello world from processor isys107, rank 6 out of 10 processors.
+Hello world from processor isys110, rank 9 out of 10 processors.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 5 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 32036, collisions: 67933, updated values 0.
+        CPU-Time: 61.621821 seconds, global hashmap size: 300000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 11 -f machines.txt bin/main_test 
+Hello world from processor isys104, rank 3 out of 11 processors.
+Hello world from processor isys105, rank 4 out of 11 processors.
+Hello world from processor isys110, rank 9 out of 11 processors.
+Hello world from processor isys107, rank 6 out of 11 processors.
+Hello world from processor isys109, rank 8 out of 11 processors.
+Hello world from processor isys103, rank 2 out of 11 processors.
+Hello world from processor isys106, rank 5 out of 11 processors.
+Hello world from processor isys101, rank 0 out of 11 processors.
+Hello world from processor isys102, rank 1 out of 11 processors.
+Hello world from processor isys108, rank 7 out of 11 processors.
+Hello world from processor isys111, rank 10 out of 11 processors.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 9 and I'm on the default job.                                                                                              
+I am rank 7 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 10 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 33872, collisions: 66097, updated values 0.
+        CPU-Time: 65.032424 seconds, global hashmap size: 330000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 12 -f machines.txt bin/main_test 
+Hello world from processor isys110, rank 9 out of 12 processors.
+Hello world from processor isys112, rank 11 out of 12 processors.
+Hello world from processor isys109, rank 8 out of 12 processors.
+Hello world from processor isys101, rank 0 out of 12 processors.
+Hello world from processor isys104, rank 3 out of 12 processors.
+Hello world from processor isys102, rank 1 out of 12 processors.
+Hello world from processor isys105, rank 4 out of 12 processors.
+Hello world from processor isys107, rank 6 out of 12 processors.
+Hello world from processor isys103, rank 2 out of 12 processors.
+Hello world from processor isys111, rank 10 out of 12 processors.
+Hello world from processor isys108, rank 7 out of 12 processors.
+Hello world from processor isys106, rank 5 out of 12 processors.
+I am rank 8 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 35707, collisions: 64262, updated values 0.
+        CPU-Time: 64.846566 seconds, global hashmap size: 360000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 13 -f machines.txt bin/main_test 
+Hello world from processor isys103, rank 2 out of 13 processors.
+Hello world from processor isys101, rank 0 out of 13 processors.
+Hello world from processor isys106, rank 5 out of 13 processors.
+Hello world from processor isys111, rank 10 out of 13 processors.
+Hello world from processor isys112, rank 11 out of 13 processors.
+Hello world from processor isys102, rank 1 out of 13 processors.
+Hello world from processor isys104, rank 3 out of 13 processors.
+Hello world from processor isys105, rank 4 out of 13 processors.
+Hello world from processor isys108, rank 7 out of 13 processors.
+Hello world from processor isys107, rank 6 out of 13 processors.
+Hello world from processor isys109, rank 8 out of 13 processors.
+Hello world from processor isys110, rank 9 out of 13 processors.
+Hello world from processor isys113, rank 12 out of 13 processors.
+I am rank 2 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 7 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 37686, collisions: 62284, updated values 0.
+        CPU-Time: 68.338675 seconds, global hashmap size: 390000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 14 -f machines.txt bin/main_test 
+Hello world from processor isys103, rank 2 out of 14 processors.
+Hello world from processor isys102, rank 1 out of 14 processors.
+Hello world from processor isys104, rank 3 out of 14 processors.
+Hello world from processor isys111, rank 10 out of 14 processors.
+Hello world from processor isys105, rank 4 out of 14 processors.
+Hello world from processor isys109, rank 8 out of 14 processors.
+Hello world from processor isys108, rank 7 out of 14 processors.
+Hello world from processor isys112, rank 11 out of 14 processors.
+Hello world from processor isys113, rank 12 out of 14 processors.
+Hello world from processor isys106, rank 5 out of 14 processors.
+Hello world from processor isys110, rank 9 out of 14 processors.
+Hello world from processor isys101, rank 0 out of 14 processors.
+Hello world from processor isys107, rank 6 out of 14 processors.
+Hello world from processor isys114, rank 13 out of 14 processors.
+I am rank 6 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 1 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 39209, collisions: 60761, updated values 0.
+        CPU-Time: 72.315175 seconds, global hashmap size: 420000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 15 -f machines.txt bin/main_test  
+Hello world from processor isys110, rank 9 out of 15 processors.
+Hello world from processor isys103, rank 2 out of 15 processors.
+Hello world from processor isys115, rank 14 out of 15 processors.
+Hello world from processor isys105, rank 4 out of 15 processors.
+Hello world from processor isys104, rank 3 out of 15 processors.
+Hello world from processor isys113, rank 12 out of 15 processors.
+Hello world from processor isys108, rank 7 out of 15 processors.
+Hello world from processor isys111, rank 10 out of 15 processors.
+Hello world from processor isys102, rank 1 out of 15 processors.
+Hello world from processor isys101, rank 0 out of 15 processors.
+Hello world from processor isys109, rank 8 out of 15 processors.
+Hello world from processor isys107, rank 6 out of 15 processors.
+Hello world from processor isys114, rank 13 out of 15 processors.
+Hello world from processor isys106, rank 5 out of 15 processors.
+Hello world from processor isys112, rank 11 out of 15 processors.
+I am rank 1 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 5 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 40847, collisions: 59123, updated values 0.
+        CPU-Time: 74.019845 seconds, global hashmap size: 450000.
+ 
+isys119@Proseminar/git/projektseminar> mpiexec -n 16 -f machines.txt bin/main_test
+Hello world from processor isys101, rank 0 out of 16 processors.
+Hello world from processor isys109, rank 8 out of 16 processors.
+Hello world from processor isys112, rank 11 out of 16 processors.
+Hello world from processor isys116, rank 15 out of 16 processors.
+Hello world from processor isys108, rank 7 out of 16 processors.
+Hello world from processor isys102, rank 1 out of 16 processors.
+Hello world from processor isys104, rank 3 out of 16 processors.
+Hello world from processor isys114, rank 13 out of 16 processors.
+Hello world from processor isys106, rank 5 out of 16 processors.
+Hello world from processor isys105, rank 4 out of 16 processors.
+Hello world from processor isys103, rank 2 out of 16 processors.
+Hello world from processor isys113, rank 12 out of 16 processors.
+Hello world from processor isys111, rank 10 out of 16 processors.
+Hello world from processor isys110, rank 9 out of 16 processors.
+Hello world from processor isys107, rank 6 out of 16 processors.
+Hello world from processor isys115, rank 14 out of 16 processors.
+I am rank 2 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 15 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 8 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 42415, collisions: 57554, updated values 0.
+        CPU-Time: 78.795681 seconds, global hashmap size: 480000.
+     
+isys119@Proseminar/git/projektseminar> mpiexec -n 17 -f machines.txt bin/main_test 
+Hello world from processor isys114, rank 13 out of 17 processors.
+Hello world from processor isys102, rank 1 out of 17 processors.
+Hello world from processor isys109, rank 8 out of 17 processors.
+Hello world from processor isys111, rank 10 out of 17 processors.
+Hello world from processor isys115, rank 14 out of 17 processors.
+Hello world from processor isys107, rank 6 out of 17 processors.
+Hello world from processor isys105, rank 4 out of 17 processors.
+Hello world from processor isys106, rank 5 out of 17 processors.
+Hello world from processor isys104, rank 3 out of 17 processors.
+Hello world from processor isys103, rank 2 out of 17 processors.
+Hello world from processor isys101, rank 0 out of 17 processors.
+Hello world from processor isys110, rank 9 out of 17 processors.
+Hello world from processor isys108, rank 7 out of 17 processors.
+Hello world from processor isys112, rank 11 out of 17 processors.
+Hello world from processor isys113, rank 12 out of 17 processors.
+Hello world from processor isys116, rank 15 out of 17 processors.
+Hello world from processor isys117, rank 16 out of 17 processors.
+I am rank 6 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 8 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 15 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+I am rank 16 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 43594, collisions: 56376, updated values 0.
+        CPU-Time: 74.465369 seconds, global hashmap size: 510000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 18 -f machines.txt bin/main_test 
+Hello world from processor isys102, rank 1 out of 18 processors.
+Hello world from processor isys112, rank 11 out of 18 processors.
+Hello world from processor isys113, rank 12 out of 18 processors.
+Hello world from processor isys103, rank 2 out of 18 processors.
+Hello world from processor isys117, rank 16 out of 18 processors.
+Hello world from processor isys111, rank 10 out of 18 processors.
+Hello world from processor isys107, rank 6 out of 18 processors.
+Hello world from processor isys105, rank 4 out of 18 processors.
+Hello world from processor isys108, rank 7 out of 18 processors.
+Hello world from processor isys104, rank 3 out of 18 processors.
+Hello world from processor isys116, rank 15 out of 18 processors.
+Hello world from processor isys106, rank 5 out of 18 processors.
+Hello world from processor isys101, rank 0 out of 18 processors.
+Hello world from processor isys110, rank 9 out of 18 processors.
+Hello world from processor isys114, rank 13 out of 18 processors.
+Hello world from processor isys115, rank 14 out of 18 processors.
+Hello world from processor isys109, rank 8 out of 18 processors.
+Hello world from processor isys118, rank 17 out of 18 processors.
+I am rank 8 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+I am rank 16 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 10 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 15 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+I am rank 17 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 44732, collisions: 55237, updated values 0.
+        CPU-Time: 76.373530 seconds, global hashmap size: 540000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 19 -f machines.txt bin/main_test  
+Hello world from processor isys104, rank 3 out of 19 processors.
+Hello world from processor isys105, rank 4 out of 19 processors.
+Hello world from processor isys112, rank 11 out of 19 processors.
+Hello world from processor isys111, rank 10 out of 19 processors.
+Hello world from processor isys106, rank 5 out of 19 processors.
+Hello world from processor isys114, rank 13 out of 19 processors.
+Hello world from processor isys103, rank 2 out of 19 processors.
+Hello world from processor isys113, rank 12 out of 19 processors.
+Hello world from processor isys109, rank 8 out of 19 processors.
+Hello world from processor isys117, rank 16 out of 19 processors.
+Hello world from processor isys118, rank 17 out of 19 processors.
+Hello world from processor isys107, rank 6 out of 19 processors.
+Hello world from processor isys102, rank 1 out of 19 processors.
+Hello world from processor isys108, rank 7 out of 19 processors.
+Hello world from processor isys115, rank 14 out of 19 processors.
+Hello world from processor isys116, rank 15 out of 19 processors.
+Hello world from processor isys110, rank 9 out of 19 processors.
+Hello world from processor isys101, rank 0 out of 19 processors.
+Hello world from processor isys119, rank 18 out of 19 processors.
+I am rank 18 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 8 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 6 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+I am rank 15 and I'm on the default job.
+I am rank 16 and I'm on the default job.
+I am rank 17 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 46187, collisions: 53783, updated values 0.
+        CPU-Time: 81.067501 seconds, global hashmap size: 570000.
+
+isys119@Proseminar/git/projektseminar> mpiexec -n 20 -f machines.txt bin/main_test  
+Hello world from processor isys119, rank 18 out of 20 processors.
+Hello world from processor isys114, rank 13 out of 20 processors.
+Hello world from processor isys104, rank 3 out of 20 processors.
+Hello world from processor isys111, rank 10 out of 20 processors.
+Hello world from processor isys115, rank 14 out of 20 processors.
+Hello world from processor isys113, rank 12 out of 20 processors.
+Hello world from processor isys110, rank 9 out of 20 processors.
+Hello world from processor isys118, rank 17 out of 20 processors.
+Hello world from processor isys116, rank 15 out of 20 processors.
+Hello world from processor isys117, rank 16 out of 20 processors.
+Hello world from processor isys112, rank 11 out of 20 processors.
+Hello world from processor isys107, rank 6 out of 20 processors.
+Hello world from processor isys102, rank 1 out of 20 processors.
+Hello world from processor isys101, rank 0 out of 20 processors.
+Hello world from processor isys109, rank 8 out of 20 processors.
+Hello world from processor isys105, rank 4 out of 20 processors.
+Hello world from processor isys103, rank 2 out of 20 processors.
+Hello world from processor isys106, rank 5 out of 20 processors.
+Hello world from processor isys108, rank 7 out of 20 processors.
+Hello world from processor isys120, rank 19 out of 20 processors.
+I am rank 18 and I'm on the default job.
+I am rank 10 and I'm on the default job.
+I am rank 5 and I'm on the default job.
+I am rank 7 and I'm on the default job.
+I am rank 16 and I'm on the default job.
+I am rank 19 and I'm on the default job.
+I am rank 11 and I'm on the default job.
+I am rank 6 and I'm on the default job.
+I am rank 3 and I'm on the default job.
+I am rank 1 and I'm on the default job.
+I am rank 0 and I'm on job zero.
+I am rank 8 and I'm on the default job.
+I am rank 4 and I'm on the default job.
+I am rank 2 and I'm on the default job.
+I am rank 14 and I'm on the default job.
+I am rank 9 and I'm on the default job.
+I am rank 17 and I'm on the default job.
+I am rank 15 and I'm on the default job.
+I am rank 12 and I'm on the default job.
+I am rank 13 and I'm on the default job.
+Rank 0 finished its work!
+        Inserted values: 47491, collisions: 52479, updated values 0.
+        CPU-Time: 78.423826 seconds, global hashmap size: 600000.

@@ -1,5 +1,6 @@
 #include <ctype.h>
 #include <mpi.h>
+#include <time.h>
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
@@ -48,11 +49,40 @@ int main(int argc, char **argv) {
 
      // DO Work
      if (world_rank == 0) {
+
+         clock_t start, end;
+        double time_diff;
+
+        start = clock();
+
          ret = job_zero(local_array, world_rank);
          if (ret != 0) {
              printf("Something went wrong during job zero!\n");
          }
-     } else {
+
+        end = clock();
+        time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
+        printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
+
+     } 
+     
+     
+		/*else if (world_rank == 1){
+		clock_t start, end;
+        double time_diff;
+
+        start = clock();
+
+         ret = job_one(local_array, world_rank);
+         if (ret != 0) {
+             printf("Something went wrong during job one!\n");
+         }
+
+        end = clock();
+        time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
+        printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
+	} */
+		 else {
          ret = default_job(local_array, world_rank);
          if (ret != 0) {
              printf("Something went wrong during the default job!\n");
@@ -96,13 +126,26 @@ int job_zero(LA local_array, int world_rank) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;
     }
-
     printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
+
     return 0;
 }
 
 int job_one(LA local_array, int world_rank) {
+	int ret;
+    int insert_count = 0;
+    int collision_count = 0;
+    int update_count = 0;
+    char message[30];
+
     printf("I am rank %d and I'm on job one.\n", world_rank);
+    ret = read_and_put("./test_files/names101.txt", &insert_count, &collision_count, &update_count, local_array);
+    if (ret != 0) {
+        printf("Something went wrong during job one on  rank %d.\n", world_rank);
+        return ret;
+    }
+    printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
+
     return 0;
 }
 int job_two(LA local_array, int world_rank) {
