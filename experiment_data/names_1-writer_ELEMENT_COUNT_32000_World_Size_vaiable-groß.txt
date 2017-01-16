@@ -1,4 +1,4 @@
-- Schrieben von 99970 Datensätzen
+- Schreiben von 99970 Datensätzen
 - 1 schreibender Prozess
 - World_Size variable
 
