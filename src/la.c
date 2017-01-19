@@ -39,15 +39,17 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
 
     // Calculate MPI window size
     int size_of_type;
+    int i;
     MPI_Aint la_size;
     _MPI_CHECK_(MPI_Type_size(mpi_entry_type, &size_of_type));
     la_size = array_dim * size_of_type;
 
     /* Allocate memory and create window */
     void *la_win_ptr;
-    _MPI_CHECK_(MPI_Win_allocate(la_size, size_of_type, mpi_info, comm, &la_win_ptr, &new_la->la_win));
+    _MPI_CHECK_(MPI_Win_allocate(la_size, size_of_type, MPI_INFO_NULL, comm, &la_win_ptr, &new_la->la_win));
     _MPI_CHECK_(MPI_Info_free(&mpi_info));
 
+    /* Memory init*/
     /* Create critical section window */
     int ret;
     ret = mutex_create(comm, array_dim, w_size, &new_la->lock_win);
@@ -84,11 +86,9 @@ int la_put(LA la, Entry *e) {
 
     // Collision check
     _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
-    if (strlen(tmp->value) > 0) {
-        /* printf("Collision! on node %d on index %d.\n\t
-            Latest entry: key = %s,  value = %s\n\t
-            Collision entry: key = %s, value = %s\n",
-            node, idx, tmp->key, tmp->value, e->key, e->value);*/
+    if (strlen(tmp->key) > 6) {
+        //if(node != 0)
+         printf("Collision! on node %d on index %d.\n\t Latest entry: key = %s,  value = %s\n\t Collision entry: key = %s, value = %s\n", node, idx, tmp->key, tmp->value, e->key, e->value);
         if (strcmp(tmp->key, e->key) == 0) {
             /* printf("Update! on node %d on index %d.\n\t
                 Latest entry: key = %s,  value = %s\n\t
@@ -156,8 +156,10 @@ char *la_get(LA la, char *key) {
 void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *idx) {
     uint8_t     node_part;
     uint32_t    local_part, key_hash;
+    uint32_t    node_count;
     key_hash = jenkins_hash((uint8_t*)key, strlen(key));
     separate(key_hash, &local_part, &node_part);
-    *node = node_hash(node_part, world_size);
+    //*node = jenkins_hash(node_part, world_size);
+    *node = node_hash(key_hash, world_size);
     *idx = local_hash(local_part, ELEMENT_COUNT);
 }

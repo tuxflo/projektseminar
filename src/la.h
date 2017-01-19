@@ -2,6 +2,8 @@
 #define LA_h
 #include "entry.h"
 #include "constants.h"
+#include <inttypes.h>
+#include <errno.h>
 #include <mpi.h>
 
 static const char *COLLISION = "COLLISION";
