@@ -19,5 +19,6 @@ typedef struct _LA {
 int     la_create(MPI_Comm comm, int la_size, int world_size, LA *la);
 int     la_put(LA la, Entry *e);
 char*   la_get(LA la, char *key);
+int     la_init_mem(LA la);
 
 #endif

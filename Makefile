@@ -9,5 +9,5 @@ run_main_test:
 main_test: compile_main_test run_main_test
 
 compile_main_test:
-	mpicc -o bin/main_test src/main_test.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c
+	mpicc -o bin/main_test src/main_test.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c src/check.c
 

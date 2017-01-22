@@ -11,14 +11,14 @@
 #include "la.h"
 #include "hash.h"
 #include "separate.h"
+#include "check.h"
 
 int job_zero(LA local_array, int world_rank);
 int job_one(LA local_array, int world_rank);
 int job_two(LA local_array, int world_rank);
 int default_job(LA local_array, int world_rank);
-int check_values(LA local_array, int world_size);
-Entry *check_buffer;
 int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA local_array);
+Entry *check_buffer = NULL;
 
 int main(int argc, char **argv) {
     int ret;
@@ -29,9 +29,6 @@ int main(int argc, char **argv) {
     int world_size;
     int i;
     _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
-    check_buffer = (Entry *) malloc(sizeof(Entry) * world_size * ELEMENT_COUNT);
-    for(i = 0; i < world_size * ELEMENT_COUNT; i++)
-        strcpy(check_buffer[i].key, ""); 
 
     int world_rank;
     _MPI_CHECK_(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
@@ -51,16 +48,12 @@ int main(int argc, char **argv) {
          MPI_Abort(MPI_COMM_WORLD, 1);
          exit(EXIT_FAILURE);
      }
-    Entry *tmp =  malloc(sizeof(Entry));
-    memset(tmp->key, '\0', sizeof(tmp->key));
-    memset(tmp->value, '\0', sizeof(tmp->value));
-    //tmp->key[0] = '\0';
-    //tmp->value[0] = '\0';
-    MPI_Win_fence(0, local_array->la_win);
-    for (i = 0; i < ELEMENT_COUNT; i++) {
-      _MPI_CHECK_(MPI_Put(tmp, 1, local_array->mpi_datatype, world_rank, i, 1, local_array->mpi_datatype, local_array->la_win));
-    }
-    MPI_Win_fence(0, local_array->la_win);
+     ret = la_init_mem(local_array);
+     if(ret < 0) {
+         printf("Error initializing the array with empty entries\n");
+         exit(EXIT_FAILURE);
+     }
+
 
      // DO Work
      if (world_rank == 0) {
@@ -70,6 +63,15 @@ int main(int argc, char **argv) {
 
         start = clock();
 
+        int world_size;
+        _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
+        ret = check_init(local_array, world_size);
+        if(ret < 0){
+             printf("Something went wrong during chek init!\n");
+             exit(EXIT_FAILURE);
+        }
+
+
          ret = job_zero(local_array, world_rank);
          if (ret != 0) {
              printf("Something went wrong during job zero!\n");
@@ -78,6 +80,7 @@ int main(int argc, char **argv) {
         end = clock();
         time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
         printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
+        printf("Compare check: %d\n", check_values(local_array, world_size, check_buffer));
 
      } 
      
@@ -124,24 +127,10 @@ int main(int argc, char **argv) {
      */
 
      _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
-     printf("Compare check: %d\n", check_values(local_array, world_size));
      _MPI_CHECK_(MPI_Finalize());
      exit(EXIT_SUCCESS);
 }
 
-int check_values(LA local_array, int world_size) {
-  int x, y, i;
-  int ret = 0;
-
-  for(i = 0; i < ELEMENT_COUNT * world_size; i++) {
-    char *tmp = la_get(local_array, check_buffer[i].key);
-    if(strncmp(tmp, check_buffer[i].value, strlen(tmp)) != 0 && strcmp(tmp, "COLLISION") != 0) {
-      printf("check buffer %d,  key: %s, value: %s, string_size: %d\n", i, check_buffer[i].key, check_buffer[i].value, strlen(tmp)); 
-      ret = 1;
-    }
-  }
-  return ret;
-}
 
 int job_zero(LA local_array, int world_rank) {
     int ret;
@@ -156,27 +145,11 @@ int job_zero(LA local_array, int world_rank) {
     memset(buf, '\0', sizeof(buf));
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    printf("Checking that array was initialized empty...\n");
-
-    Entry *tmp = malloc(sizeof(Entry));
-
-    for(tmp_rank = 0; tmp_rank < world_size; tmp_rank++) {
-      for(i= 0; i < ELEMENT_COUNT; i++) {
-        _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, tmp_rank, MPI_MODE_NOCHECK, local_array->la_win));
-        MPI_Get(tmp, 1, local_array->mpi_datatype, tmp_rank, i, 1, local_array->mpi_datatype, local_array->la_win);
-        if(strlen(tmp->key) != 0) {
-          printf("Array not empty\n");
-          MPI_Abort(MPI_COMM_WORLD, 1);
-        }
-        _MPI_CHECK_(MPI_Win_unlock(tmp_rank, local_array->la_win));
-      }
+    ret = read_and_put("./test_files/names.txt", &insert_count, &collision_count, &update_count, local_array);
+    if (ret != 0) {
+        printf("Something went wrong during job zero on  rank %d.\n", world_rank);
+        return ret;
     }
-    printf("...done\n");
-    //ret = read_and_put("./test_files/names.txt", &insert_count, &collision_count, &update_count, local_array);
-    //if (ret != 0) {
-    //    printf("Something went wrong during job zero on  rank %d.\n", world_rank);
-    //    return ret;
-    //}
     printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
 
     return 0;
@@ -217,6 +190,11 @@ int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA lo
     int world_size;
     int i, j;
     _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
+     check_buffer = init_check_buffer(world_size);
+     if(check_buffer == NULL) {
+         printf("Error initializing the check buffer\n");
+         exit(EXIT_FAILURE);
+     }
 
     fp = fopen(file, "r");
     if (fp == NULL) {

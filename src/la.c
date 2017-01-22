@@ -86,7 +86,8 @@ int la_put(LA la, Entry *e) {
 
     // Collision check
     _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
-    if (strlen(tmp->key) > 6) {
+    printf("len: %d first:%c \n", strlen(tmp->key), tmp->key[0]);
+    if (strlen(tmp->key) != 0) {
         //if(node != 0)
          printf("Collision! on node %d on index %d.\n\t Latest entry: key = %s,  value = %s\n\t Collision entry: key = %s, value = %s\n", node, idx, tmp->key, tmp->value, e->key, e->value);
         if (strcmp(tmp->key, e->key) == 0) {
@@ -151,6 +152,27 @@ char *la_get(LA la, char *key) {
         //printf("Got collision on node %d on index %d with key %s.\n", node, idx, key);
         return (char*)COLLISION;
     }
+}
+
+int la_init_mem(LA la) {
+    int world_rank;
+    int i;
+    _MPI_CHECK_(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
+    Entry *tmp =  malloc(sizeof(Entry));
+    tmp->key[0] = '\0';
+    tmp->value[0] = '\0';
+    memset(tmp->key, '\0', sizeof(tmp->key));
+    memset(tmp->value, '\0', sizeof(tmp->value));
+    //MPI_Win_fence(0, la->la_win);
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, world_rank, MPI_MODE_NOCHECK, la->la_win));
+    for (i = 0; i < ELEMENT_COUNT; i++) {
+      _MPI_CHECK_(MPI_Put(tmp, 1, la->mpi_datatype, world_rank, i, 1, la->mpi_datatype, la->la_win));
+    }
+    MPI_Win_flush(world_rank, la->la_win);
+    _MPI_CHECK_(MPI_Win_unlock(world_rank, la->la_win));
+    //MPI_Win_fence(0, la->la_win);
+    free(tmp);
+    return 0;
 }
 
 void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *idx) {
