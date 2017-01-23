@@ -9,7 +9,7 @@
 void calculate_hash_values(int machinecount, int elementcount, char *key, uint32_t *node, uint32_t *idx);
 int main(int argc, char **argv) {
     int machinecount, elementcount;
-    char *file = "./test_files/names100.txt";
+    char *file = "./test_files/names.txt";
     int *ret;
     int i, j;
     //memset (ret, 0, sizeof (int) * machinecount);
@@ -51,11 +51,12 @@ int main(int argc, char **argv) {
 
         calculate_hash_values(machinecount, elementcount,key, &node, &index);
         ret[node] = ret[node] + 1;
+        i++;
     }
 
     for(i=0; i<machinecount; i++) {
-        printf("Node: %03d, values: %03d  ", i, ret[i]);
-        for(j=0; j<ret[i]; j++) {
+        printf("Node: %03d, values: %05d  ", i, ret[i]);
+        for(j=0; j<ret[i] / 50; j++) {
             printf("+");
         }
         printf("\n");
