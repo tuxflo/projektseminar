@@ -168,7 +168,7 @@ int la_init_mem(LA la) {
     for (i = 0; i < ELEMENT_COUNT; i++) {
       _MPI_CHECK_(MPI_Put(tmp, 1, la->mpi_datatype, world_rank, i, 1, la->mpi_datatype, la->la_win));
     }
-    MPI_Win_flush(world_rank, la->la_win);
+    MPI_Win_sync(la->la_win);
     _MPI_CHECK_(MPI_Win_unlock(world_rank, la->la_win));
     //MPI_Win_fence(0, la->la_win);
     free(tmp);
