@@ -81,7 +81,7 @@ void calculate_hash_values(int machinecount, int elementcount, char *key, uint32
     uint32_t    local_part, key_hash;
     key_hash = jenkins_hash((uint8_t*)key, strlen(key));
     *node = key_hash % machinecount;
-    *idx = key_hash % elementcount;
+    *idx = better_local_hash(key_hash, elementcount);
 }
 
 void calculate_hash_values_separate(int machinecount, int elementcount, char *key, uint32_t *node, uint32_t *idx) {
@@ -99,15 +99,23 @@ void print_results(int *array, int machinecount, int elementcount) {
   if((int) elementcount / machinecount > 100)
     max = 15;
   if((int)elementcount / machinecount > 1000)
-    max = 10;
-  if((int)elementcount / machinecount >= 10000)
-    max = 150;
+    max = 50;
+  if((int)elementcount / machinecount >= 30000)
+    max = 350;
   if((int)elementcount / machinecount >= 100000)
     max = 100;
 
+  printf("%27s", "Elements [");
+  for(j=1; j < 13; j++) {
+    for(i=0; i<10; i++)
+      printf("-");
+    printf("%d", (i*100)*j);
+  }
+  printf("]\n");
+
     for(i=0; i<machinecount; i++) {
         printf("Node: %3d, values: %5d  ", i, array[i]);
-        for(j=0; j<array[i] / max; j++) {
+        for(j=0; j<array[i] / 73; j++) {
             printf("+");
         }
         printf("\n");
