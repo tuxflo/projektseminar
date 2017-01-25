@@ -1,0 +1,250 @@
+mpicc -o bin/main_test src/main_test.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c src/check.c src/insert.c
+HASH=1 mpiexec -n 1  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 625, collisions: 29375, updated values 0.
+	CPU-Time: 0.151796 seconds, global hashmap size: 10000.
+Compare check: 0
+HASH=1 mpiexec -n 2  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 1250, collisions: 28750, updated values 0.
+	CPU-Time: 21.969307 seconds, global hashmap size: 20000.
+Compare check: 0
+HASH=1 mpiexec -n 3  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 1875, collisions: 28125, updated values 0.
+	CPU-Time: 28.678070 seconds, global hashmap size: 30000.
+Compare check: 0
+HASH=1 mpiexec -n 4  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 2500, collisions: 27500, updated values 0.
+	CPU-Time: 31.965110 seconds, global hashmap size: 40000.
+Compare check: 0
+HASH=1 mpiexec -n 5  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 3125, collisions: 26875, updated values 0.
+	CPU-Time: 33.924741 seconds, global hashmap size: 50000.
+Compare check: 0
+HASH=1 mpiexec -n 6  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 3750, collisions: 26250, updated values 0.
+	CPU-Time: 35.518489 seconds, global hashmap size: 60000.
+Compare check: 0
+HASH=1 mpiexec -n 7  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 4368, collisions: 25632, updated values 0.
+	CPU-Time: 37.207617 seconds, global hashmap size: 70000.
+Compare check: 0
+HASH=1 mpiexec -n 8  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 4986, collisions: 25014, updated values 0.
+	CPU-Time: 38.770508 seconds, global hashmap size: 80000.
+Compare check: 0
+HASH=1 mpiexec -n 9  -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 5603, collisions: 24397, updated values 0.
+	CPU-Time: 39.839114 seconds, global hashmap size: 90000.
+Compare check: 0
+HASH=1 mpiexec -n 10 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 6209, collisions: 23791, updated values 0.
+	CPU-Time: 40.577603 seconds, global hashmap size: 100000.
+Compare check: 0
+HASH=1 mpiexec -n 11 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 6774, collisions: 23225, updated values 1.
+	CPU-Time: 41.511497 seconds, global hashmap size: 110000.
+Compare check: 0
+HASH=1 mpiexec -n 12 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 7370, collisions: 22630, updated values 0.
+	CPU-Time: 41.828708 seconds, global hashmap size: 120000.
+Compare check: 0
+HASH=1 mpiexec -n 13 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 7901, collisions: 22098, updated values 1.
+	CPU-Time: 43.855946 seconds, global hashmap size: 130000.
+Compare check: 0
+HASH=1 mpiexec -n 14 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 8459, collisions: 21541, updated values 0.
+	CPU-Time: 45.300266 seconds, global hashmap size: 140000.
+Compare check: 0
+HASH=1 mpiexec -n 15 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 8997, collisions: 21002, updated values 1.
+	CPU-Time: 46.736173 seconds, global hashmap size: 150000.
+Compare check: 0
+HASH=1 mpiexec -n 16 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9489, collisions: 20511, updated values 0.
+	CPU-Time: 47.045845 seconds, global hashmap size: 160000.
+Compare check: 0
+HASH=1 mpiexec -n 17 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9965, collisions: 20035, updated values 0.
+	CPU-Time: 47.028812 seconds, global hashmap size: 170000.
+Compare check: 0
+HASH=1 mpiexec -n 18 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 10474, collisions: 19526, updated values 0.
+	CPU-Time: 47.074589 seconds, global hashmap size: 180000.
+Compare check: 0
+HASH=1 mpiexec -n 19 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 10911, collisions: 19088, updated values 1.
+	CPU-Time: 47.140890 seconds, global hashmap size: 190000.
+Compare check: 0
+HASH=1 mpiexec -n 20 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 11381, collisions: 18619, updated values 0.
+	CPU-Time: 47.258301 seconds, global hashmap size: 200000.
+Compare check: 0
+HASH=1 mpiexec -n 21 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 11835, collisions: 18165, updated values 0.
+	CPU-Time: 47.306559 seconds, global hashmap size: 210000.
+Compare check: 0
+HASH=1 mpiexec -n 22 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 12200, collisions: 17799, updated values 1.
+	CPU-Time: 47.389735 seconds, global hashmap size: 220000.
+Compare check: 0
+HASH=1 mpiexec -n 23 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 12605, collisions: 17394, updated values 1.
+	CPU-Time: 47.258021 seconds, global hashmap size: 230000.
+Compare check: 0
+HASH=1 mpiexec -n 24 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 12925, collisions: 17075, updated values 0.
+	CPU-Time: 45.664901 seconds, global hashmap size: 240000.
+Compare check: 0
+HASH=1 mpiexec -n 25 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 13341, collisions: 16658, updated values 1.
+	CPU-Time: 44.552478 seconds, global hashmap size: 250000.
+Compare check: 0
+HASH=1 mpiexec -n 26 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 13682, collisions: 16317, updated values 1.
+	CPU-Time: 45.355680 seconds, global hashmap size: 260000.
+Compare check: 0
+HASH=1 mpiexec -n 27 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 14078, collisions: 15921, updated values 1.
+	CPU-Time: 45.324379 seconds, global hashmap size: 270000.
+Compare check: 0
+HASH=1 mpiexec -n 28 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 14303, collisions: 15696, updated values 1.
+	CPU-Time: 45.085397 seconds, global hashmap size: 280000.
+Compare check: 0
+HASH=1 mpiexec -n 29 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 14658, collisions: 15341, updated values 1.
+	CPU-Time: 45.114379 seconds, global hashmap size: 290000.
+Compare check: 0
+HASH=1 mpiexec -n 30 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 15002, collisions: 14997, updated values 1.
+	CPU-Time: 45.601655 seconds, global hashmap size: 300000.
+Compare check: 0
+HASH=1 mpiexec -n 31 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 15249, collisions: 14750, updated values 1.
+	CPU-Time: 45.303503 seconds, global hashmap size: 310000.
+Compare check: 0
+HASH=1 mpiexec -n 32 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 15536, collisions: 14464, updated values 0.
+	CPU-Time: 44.864612 seconds, global hashmap size: 320000.
+Compare check: 0
+HASH=1 mpiexec -n 33 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 15762, collisions: 14237, updated values 1.
+	CPU-Time: 45.882101 seconds, global hashmap size: 330000.
+Compare check: 0
+HASH=1 mpiexec -n 34 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 16005, collisions: 13995, updated values 0.
+	CPU-Time: 46.063784 seconds, global hashmap size: 340000.
+Compare check: 0
+HASH=1 mpiexec -n 35 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 16338, collisions: 13661, updated values 1.
+	CPU-Time: 46.021463 seconds, global hashmap size: 350000.
+Compare check: 0
+HASH=1 mpiexec -n 36 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 16487, collisions: 13512, updated values 1.
+	CPU-Time: 46.579395 seconds, global hashmap size: 360000.
+Compare check: 0
+HASH=1 mpiexec -n 37 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 16794, collisions: 13205, updated values 1.
+	CPU-Time: 47.178440 seconds, global hashmap size: 370000.
+Compare check: 0
+HASH=1 mpiexec -n 38 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 16963, collisions: 13036, updated values 1.
+	CPU-Time: 47.725118 seconds, global hashmap size: 380000.
+Compare check: 0
+HASH=1 mpiexec -n 39 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 17183, collisions: 12816, updated values 1.
+	CPU-Time: 47.945708 seconds, global hashmap size: 390000.
+Compare check: 0
+HASH=1 mpiexec -n 40 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 17444, collisions: 12556, updated values 0.
+	CPU-Time: 46.973981 seconds, global hashmap size: 400000.
+Compare check: 0
+HASH=1 mpiexec -n 41 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 17704, collisions: 12295, updated values 1.
+	CPU-Time: 47.913034 seconds, global hashmap size: 410000.
+Compare check: 0
+HASH=1 mpiexec -n 42 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 17893, collisions: 12107, updated values 0.
+	CPU-Time: 48.167921 seconds, global hashmap size: 420000.
+Compare check: 0
+HASH=1 mpiexec -n 43 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18033, collisions: 11966, updated values 1.
+	CPU-Time: 48.281516 seconds, global hashmap size: 430000.
+Compare check: 0
+HASH=1 mpiexec -n 44 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18246, collisions: 11753, updated values 1.
+	CPU-Time: 48.099302 seconds, global hashmap size: 440000.
+Compare check: 0
+HASH=1 mpiexec -n 45 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18457, collisions: 11542, updated values 1.
+	CPU-Time: 47.950302 seconds, global hashmap size: 450000.
+Compare check: 0
+HASH=1 mpiexec -n 46 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18593, collisions: 11406, updated values 1.
+	CPU-Time: 48.069622 seconds, global hashmap size: 460000.
+Compare check: 0
+HASH=1 mpiexec -n 47 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18765, collisions: 11234, updated values 1.
+	CPU-Time: 47.382877 seconds, global hashmap size: 470000.
+Compare check: 0
+HASH=1 mpiexec -n 48 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 18829, collisions: 11171, updated values 0.
+	CPU-Time: 47.313164 seconds, global hashmap size: 480000.
+Compare check: 0
+HASH=1 mpiexec -n 49 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 19096, collisions: 10903, updated values 1.
+	CPU-Time: 45.774305 seconds, global hashmap size: 490000.
+Compare check: 0
+HASH=1 mpiexec -n 50 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 19200, collisions: 10799, updated values 1.
+	CPU-Time: 46.923832 seconds, global hashmap size: 500000.
