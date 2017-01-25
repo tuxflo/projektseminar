@@ -96,6 +96,7 @@ int la_put(LA la, Entry *e) {
     printf("Occupation: %d\n", occupation);
     if(occupation > 0) {
         _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+        //_MPI_CHECK_(MPI_Win_flush(node, la->la_win));
         printf("node: %u, idx: %u\n", node, idx);
         printf("tmp.key: %s tmp.value: %s, e.key: %s, e.value: %s\n", tmp->key, tmp->value, e->key, e->value);
         if (strcmp(tmp->key, e->key) == 0) {
@@ -114,6 +115,7 @@ int la_put(LA la, Entry *e) {
 
     if (ret != 1) {
         _MPI_CHECK_(MPI_Put(e, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+        _MPI_CHECK_(MPI_Win_flush(node, la->la_win));
         insert_window_increment(la->insert_win, node, idx);
         printf("Saving on node %d on index %d. key = %s,  value = %s\n", node, idx, e->key, e->value);
     }
@@ -148,11 +150,13 @@ char *la_get(LA la, char *key) {
     int occupation = 0;
     _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->insert_win));
     _MPI_CHECK_(MPI_Get(&occupation, 1, MPI_INT, node, idx, 1, MPI_INT, la->insert_win));
+    //_MPI_CHECK_(MPI_Win_flush(node, la->la_win));
     _MPI_CHECK_(MPI_Win_unlock(node, la->insert_win));
 
     // Using lock_shared allows get accesses to proceed
     _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->la_win));
     _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+    //_MPI_CHECK_(MPI_Win_flush(node, la->la_win));
     _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
     ret = mutex_release(la->lock_win, node, idx);
@@ -180,17 +184,15 @@ int la_init_mem(LA la) {
     int world_rank;
     int i;
     _MPI_CHECK_(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
-    Entry *tmp =  malloc(sizeof(Entry));
+    Entry *tmp =  calloc(1, sizeof(Entry));
     memset(tmp->key, '\0', sizeof(tmp->key));
     memset(tmp->value, '\0', sizeof(tmp->value));
-    MPI_Win_fence(0, la->la_win);
     _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, world_rank, 0, la->la_win));
     for (i = 0; i < ELEMENT_COUNT; i++) {
         _MPI_CHECK_(MPI_Put(tmp, 1, la->mpi_datatype, world_rank, i, 1, la->mpi_datatype, la->la_win));
+        _MPI_CHECK_(MPI_Win_flush(world_rank, la->la_win));
     }
     _MPI_CHECK_(MPI_Win_unlock(world_rank, la->la_win));
-    MPI_Win_sync(la->la_win);
-    MPI_Win_fence(0, la->la_win);
     free(tmp);
     return 0;
 }
@@ -200,9 +202,7 @@ void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *
     uint32_t    local_part, key_hash;
     uint32_t    node_count;
     key_hash = jenkins_hash((uint8_t*)key, strlen(key));
-    separate(key_hash, &local_part, &node_part);
-    //*node = jenkins_hash(node_part, world_size);
-
+    //separate(key_hash, &local_part, &node_part);
     *node = node_hash(key_hash, world_size);
     *idx = local_hash(key_hash, ELEMENT_COUNT);
 }

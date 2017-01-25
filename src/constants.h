@@ -2,6 +2,6 @@
 #define Constants_h
 
 #define BUFFER_SIZE 256
-#define ELEMENT_COUNT 100
+#define ELEMENT_COUNT 10
 
 #endif

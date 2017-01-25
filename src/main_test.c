@@ -44,6 +44,9 @@ int main(int argc, char **argv) {
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
     }
+    
+    _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
+    
     ret = la_init_mem(local_array);
     if (ret != 0) {
         printf("Erro during initialisation of local array on rank %d.\n", world_rank);
@@ -73,51 +76,13 @@ int main(int argc, char **argv) {
         time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
         printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
         printf("Compare check: %d\n", check_values(local_array, world_size, check_buffer));
-
-    } 
-
-
-    /*else if (world_rank == 1){
-      clock_t start, end;
-      double time_diff;
-
-      start = clock();
-
-      ret = job_one(local_array, world_rank);
-      if (ret != 0) {
-      printf("Something went wrong during job one!\n");
-      }
-
-      end = clock();
-      time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
-      printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
-      } */
-      else {
+    } else {
           ret = default_job(local_array, world_rank);
           if (ret != 0) {
               printf("Something went wrong during the default job!\n");
           }
       }
-
-      /*
-         else if (world_rank == 1) {
-         ret = job_one(local_array, world_rank);
-         if (ret != 0) {
-         printf("Something went wrong during job one!\n");
-         }
-         } else if (world_rank == 2) {
-         ret = job_two(local_array, world_rank);
-         if (ret != 0) {
-         printf("Something went wrong during job two!\n");
-         }
-         } else {
-         ret = default_job(local_array, world_rank);
-         if (ret != 0) {
-         printf("Something went wrong during the default job!\n");
-         }
-         }
-         */
-
+      
       _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
       _MPI_CHECK_(MPI_Finalize());
       exit(EXIT_SUCCESS);
@@ -137,7 +102,7 @@ int job_zero(LA local_array, int world_rank) {
     memset(buf, '\0', sizeof(buf));
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    ret = read_and_put("./test_files/names100.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put("./test_files/names_collision_test.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;

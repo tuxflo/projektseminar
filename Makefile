@@ -18,3 +18,9 @@ compile_dist:
 
 run_dist:
 	./bin/dist 10 20
+	
+compile_januar:
+	mpicc -o bin/januar src/januar.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c src/check.c src/insert.c
+
+run_januar:
+	mpiexec -n 9 -f machines.txt bin/januar
