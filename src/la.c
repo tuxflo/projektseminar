@@ -57,6 +57,11 @@ int la_create(MPI_Comm comm, int array_dim, int w_size, LA *la) {
         return 1;
     }
 
+    ret = insert_window_create(comm, array_dim, &new_la->insert_win);
+    if (ret != 0) {
+        return 1;
+    }
+
     /* Save other data and return */
     new_la->mpi_datatype        = mpi_entry_type;
     new_la->datatype_size       = sizeof(Entry);
@@ -81,36 +86,43 @@ int la_put(LA la, Entry *e) {
         exit(EXIT_FAILURE);
     }
 
-    // Using lock_shared allows get accesses to proceed
-    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
-
     // Collision check
-    _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
-    printf("len: %d first:%c \n", strlen(tmp->key), tmp->key[0]);
-    if (strlen(tmp->key) != 0) {
-        //if(node != 0)
-         printf("Collision! on node %d on index %d.\n\t Latest entry: key = %s,  value = %s\n\t Collision entry: key = %s, value = %s\n", node, idx, tmp->key, tmp->value, e->key, e->value);
+    int occupation = 0;
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->insert_win));
+    _MPI_CHECK_(MPI_Get(&occupation, 1, MPI_INT, node, idx, 1, MPI_INT, la->insert_win));
+    _MPI_CHECK_(MPI_Win_unlock(node, la->insert_win));
+
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->la_win));
+    printf("Occupation: %d\n", occupation);
+    if(occupation > 0) {
+        _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+        printf("node: %u, idx: %u\n", node, idx);
+        printf("tmp.key: %s tmp.value: %s, e.key: %s, e.value: %s\n", tmp->key, tmp->value, e->key, e->value);
         if (strcmp(tmp->key, e->key) == 0) {
-            /* printf("Update! on node %d on index %d.\n\t
-                Latest entry: key = %s,  value = %s\n\t
-                Update entry: key = %s, value = %s\n",
-                node, idx, tmp->key, tmp->value, e->key, e->value);*/
+            printf("Update! on node %u on index %u.\n\t Latest entry: key = %s,  value = %s\n\t Update entry: key = %s, value = %s\n", node, idx, tmp->key, tmp->value, e->key, e->value);
+
             ret = 2;
         } else {
             ret = 1;
+            //printf("Collision! on node %u on index %u.\n", node, idx);
+            insert_window_increment(la->insert_win, node, idx);
         }
+
+    } else {
+        ret = 0;
     }
 
     if (ret != 1) {
-        e->value[strlen(e->value)-1] = '\0';
         _MPI_CHECK_(MPI_Put(e, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
+        insert_window_increment(la->insert_win, node, idx);
+        printf("Saving on node %d on index %d. key = %s,  value = %s\n", node, idx, e->key, e->value);
     }
 
     _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
     check = mutex_release(la->lock_win, node, idx);
     if (check != 0) {
-        printf("Error during mutex_release for idx %d on node %d.\n", idx, node);
+        printf("Error during mutex_release for idx %u on node %u.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
     }
@@ -128,28 +140,38 @@ char *la_get(LA la, char *key) {
     // Accquireing mutex
     ret = mutex_acquire(la->lock_win, node, idx);
     if (ret != 0) {
-        printf("Error during mutex_accquire for idx %d on node %d.\n", idx, node);
+        printf("Error during mutex_accquire for idx %u on node %u.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
     }
 
+    int occupation = 0;
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->insert_win));
+    _MPI_CHECK_(MPI_Get(&occupation, 1, MPI_INT, node, idx, 1, MPI_INT, la->insert_win));
+    _MPI_CHECK_(MPI_Win_unlock(node, la->insert_win));
+
     // Using lock_shared allows get accesses to proceed
-    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, MPI_MODE_NOCHECK, la->la_win));
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, node, 0, la->la_win));
     _MPI_CHECK_(MPI_Get(tmp, 1, la->mpi_datatype, node, idx, 1, la->mpi_datatype, la->la_win));
     _MPI_CHECK_(MPI_Win_unlock(node, la->la_win));
 
     ret = mutex_release(la->lock_win, node, idx);
     if (ret != 0) {
-        printf("Error during mutex_release for idx %d on node %d.\n", idx, node);
+        printf("Error during mutex_release for idx %u on node %u.\n", idx, node);
         MPI_Abort(MPI_COMM_WORLD, 1);
         exit(EXIT_FAILURE);
     }
 
-    if (strcmp(tmp->key, key) == 0) {
-        //printf("Got entry: key = %s, value = %s\n", tmp->key, tmp->value);
-        return tmp->value;
+    if(occupation == 0) {
+        return "NULL";
+    } else if(occupation == 1) {
+        if (strcmp(tmp->key, key) == 0) {
+            //printf("Got entry: key = %s, value = %s\n", tmp->key, tmp->value);
+            return tmp->value;
+        } else {
+          return (char*)COLLISION;
+        }
     } else {
-        //printf("Got collision on node %d on index %d with key %s.\n", node, idx, key);
         return (char*)COLLISION;
     }
 }
@@ -159,18 +181,16 @@ int la_init_mem(LA la) {
     int i;
     _MPI_CHECK_(MPI_Comm_rank(MPI_COMM_WORLD, &world_rank));
     Entry *tmp =  malloc(sizeof(Entry));
-    tmp->key[0] = '\0';
-    tmp->value[0] = '\0';
     memset(tmp->key, '\0', sizeof(tmp->key));
     memset(tmp->value, '\0', sizeof(tmp->value));
-    //MPI_Win_fence(0, la->la_win);
-    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, world_rank, MPI_MODE_NOCHECK, la->la_win));
+    MPI_Win_fence(0, la->la_win);
+    _MPI_CHECK_(MPI_Win_lock(MPI_LOCK_SHARED, world_rank, 0, la->la_win));
     for (i = 0; i < ELEMENT_COUNT; i++) {
-      _MPI_CHECK_(MPI_Put(tmp, 1, la->mpi_datatype, world_rank, i, 1, la->mpi_datatype, la->la_win));
+        _MPI_CHECK_(MPI_Put(tmp, 1, la->mpi_datatype, world_rank, i, 1, la->mpi_datatype, la->la_win));
     }
-    MPI_Win_sync(la->la_win);
     _MPI_CHECK_(MPI_Win_unlock(world_rank, la->la_win));
-    //MPI_Win_fence(0, la->la_win);
+    MPI_Win_sync(la->la_win);
+    MPI_Win_fence(0, la->la_win);
     free(tmp);
     return 0;
 }
@@ -182,6 +202,7 @@ void calculate_hash_values(int world_size, char *key, uint32_t *node, uint32_t *
     key_hash = jenkins_hash((uint8_t*)key, strlen(key));
     separate(key_hash, &local_part, &node_part);
     //*node = jenkins_hash(node_part, world_size);
+
     *node = node_hash(key_hash, world_size);
-    *idx = local_hash(local_part, ELEMENT_COUNT);
+    *idx = local_hash(key_hash, ELEMENT_COUNT);
 }

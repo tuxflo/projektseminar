@@ -37,98 +37,90 @@ int main(int argc, char **argv) {
     char processor_name[MPI_MAX_PROCESSOR_NAME];
     _MPI_CHECK_(MPI_Get_processor_name(processor_name, &name_len));
 
-    // Print off a hello world message
-    printf("Hello world from processor %s, rank %d out of %d processors.\n",
-         processor_name, world_rank, world_size);
+    LA local_array;
+    ret = la_create(MPI_COMM_WORLD, ELEMENT_COUNT, world_size, &local_array);
+    if (ret != 0) {
+        printf("Erro during creation of local array on rank %d.\n", world_rank);
+        MPI_Abort(MPI_COMM_WORLD, 1);
+        exit(EXIT_FAILURE);
+    }
+    ret = la_init_mem(local_array);
+    if (ret != 0) {
+        printf("Erro during initialisation of local array on rank %d.\n", world_rank);
+        MPI_Abort(MPI_COMM_WORLD, 1);
+        exit(EXIT_FAILURE);
+    }
 
-     LA local_array;
-     ret = la_create(MPI_COMM_WORLD, ELEMENT_COUNT, world_size, &local_array);
-     if (ret != 0) {
-         printf("Erro during creation of local array on rank %d.\n", world_rank);
-         MPI_Abort(MPI_COMM_WORLD, 1);
-         exit(EXIT_FAILURE);
-     }
-     ret = la_init_mem(local_array);
-     if(ret < 0) {
-         printf("Error initializing the array with empty entries\n");
-         exit(EXIT_FAILURE);
-     }
+    _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
 
+    // DO Work
+    if (world_rank == 0) {
 
-     // DO Work
-     if (world_rank == 0) {
-
-         clock_t start, end;
+        clock_t start, end;
         double time_diff;
 
         start = clock();
 
         int world_size;
         _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
-        ret = check_init(local_array, world_size);
-        if(ret < 0){
-             printf("Something went wrong during chek init!\n");
-             exit(EXIT_FAILURE);
+
+        ret = job_zero(local_array, world_rank);
+        if (ret != 0) {
+            printf("Something went wrong during job zero!\n");
         }
-
-
-         ret = job_zero(local_array, world_rank);
-         if (ret != 0) {
-             printf("Something went wrong during job zero!\n");
-         }
 
         end = clock();
         time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
         printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
         printf("Compare check: %d\n", check_values(local_array, world_size, check_buffer));
 
-     } 
-     
-     
-		/*else if (world_rank == 1){
-		clock_t start, end;
-        double time_diff;
+    } 
 
-        start = clock();
 
+    /*else if (world_rank == 1){
+      clock_t start, end;
+      double time_diff;
+
+      start = clock();
+
+      ret = job_one(local_array, world_rank);
+      if (ret != 0) {
+      printf("Something went wrong during job one!\n");
+      }
+
+      end = clock();
+      time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
+      printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
+      } */
+      else {
+          ret = default_job(local_array, world_rank);
+          if (ret != 0) {
+              printf("Something went wrong during the default job!\n");
+          }
+      }
+
+      /*
+         else if (world_rank == 1) {
          ret = job_one(local_array, world_rank);
          if (ret != 0) {
-             printf("Something went wrong during job one!\n");
+         printf("Something went wrong during job one!\n");
          }
-
-        end = clock();
-        time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
-        printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
-	} */
-		 else {
-         ret = default_job(local_array, world_rank);
-         if (ret != 0) {
-             printf("Something went wrong during the default job!\n");
-         }
-     }
-     
-     /*
-     else if (world_rank == 1) {
-         ret = job_one(local_array, world_rank);
-         if (ret != 0) {
-             printf("Something went wrong during job one!\n");
-         }
-     } else if (world_rank == 2) {
+         } else if (world_rank == 2) {
          ret = job_two(local_array, world_rank);
          if (ret != 0) {
-             printf("Something went wrong during job two!\n");
+         printf("Something went wrong during job two!\n");
          }
-     } else {
+         } else {
          ret = default_job(local_array, world_rank);
          if (ret != 0) {
-             printf("Something went wrong during the default job!\n");
+         printf("Something went wrong during the default job!\n");
          }
-     }
-     */
+         }
+         */
 
-     _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
-     _MPI_CHECK_(MPI_Finalize());
-     exit(EXIT_SUCCESS);
+      _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
+      _MPI_CHECK_(MPI_Finalize());
+      exit(EXIT_SUCCESS);
 }
 
 
@@ -145,18 +137,20 @@ int job_zero(LA local_array, int world_rank) {
     memset(buf, '\0', sizeof(buf));
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    ret = read_and_put("./test_files/names.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put("./test_files/names100.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;
     }
     printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
+    strcpy(buf, la_get(local_array, "1"));
+    printf("Buf: %s\n", buf);
 
     return 0;
 }
 
 int job_one(LA local_array, int world_rank) {
-	int ret;
+    int ret;
     int insert_count = 0;
     int collision_count = 0;
     int update_count = 0;
@@ -190,11 +184,11 @@ int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA lo
     int world_size;
     int i, j;
     _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
-     check_buffer = init_check_buffer(world_size);
-     if(check_buffer == NULL) {
-         printf("Error initializing the check buffer\n");
-         exit(EXIT_FAILURE);
-     }
+    check_buffer = init_check_buffer(world_size);
+    if(check_buffer == NULL) {
+        printf("Error initializing the check buffer\n");
+        exit(EXIT_FAILURE);
+    }
 
     fp = fopen(file, "r");
     if (fp == NULL) {

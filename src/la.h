@@ -12,6 +12,7 @@ static const char *COLLISION = "COLLISION";
 typedef struct _LA {
     MPI_Win         la_win;
     MPI_Win         lock_win;
+    MPI_Win         insert_win;
     MPI_Datatype    mpi_datatype;
     int datatype_size, local_array_size, world_size;
 } * LA;
@@ -20,5 +21,8 @@ int     la_create(MPI_Comm comm, int la_size, int world_size, LA *la);
 int     la_put(LA la, Entry *e);
 char*   la_get(LA la, char *key);
 int     la_init_mem(LA la);
+int insert_window_decrement(MPI_Win insert_win, int rank, int idx);
+int insert_window_increment(MPI_Win insert_win, int rank, int idx);
+int insert_window_create(MPI_Comm comm, int array_dim, MPI_Win *insert_win);
 
 #endif
