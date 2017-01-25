@@ -1,3 +1,5 @@
+#include <stdio.h>
+#include <string.h>
 #include "hash.h"
 
 uint32_t jenkins_hash(const uint8_t* key, size_t length) {
@@ -14,12 +16,28 @@ uint32_t jenkins_hash(const uint8_t* key, size_t length) {
     return hash;
 }
 
+uint32_t better_node_hash(const uint32_t node_key, const uint32_t node_count) {
+	uint32_t local_key = node_key;
+	local_key = (( local_key >> 16 ) ^ local_key ) * 0x45d9f3b;
+	local_key = (( local_key >> 16 ) ^ local_key ) * 0x45d9f3b;
+	local_key = ( local_key >> 16 ) ^ local_key;
+    return local_key % node_count;
+}
+
 uint32_t node_hash(const uint32_t node_key, const uint8_t node_count) {
     return (uint32_t) node_key % node_count;
 }
 
-uint32_t local_hash(const uint32_t local_key, const uint32_t local_element_count) {
+uint32_t better_local_hash(const uint32_t l_key, const uint32_t local_element_count) {
+	uint32_t local_key = l_key;
+	local_key = (( local_key >> 16 ) ^ local_key ) * 0x45d9f3b;
+	local_key = (( local_key >> 16 ) ^ local_key ) * 0x45d9f3b;
+	local_key = ( local_key >> 16 ) ^ local_key;
     return local_key % local_element_count;
+}
+
+uint32_t local_hash(const uint32_t l_key, const uint32_t local_element_count) {
+    return l_key % local_element_count;
 }
 
 uint32_t murmur3_32(const uint8_t* key, size_t len, uint32_t seed) {

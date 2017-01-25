@@ -21,7 +21,7 @@ int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA lo
 Entry *check_buffer = NULL;
 
 int main(int argc, char **argv) {
-    int ret;
+	int ret;
     MPI_Init(NULL, NULL);
     // Configure MPI error handling
     _MPI_CHECK_(MPI_Comm_set_errhandler(MPI_COMM_WORLD, MPI_ERRORS_RETURN));
@@ -102,7 +102,7 @@ int job_zero(LA local_array, int world_rank) {
     memset(buf, '\0', sizeof(buf));
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    ret = read_and_put("./test_files/names_collision_test.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put("./test_files/names30000.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;
@@ -122,7 +122,7 @@ int job_one(LA local_array, int world_rank) {
     char message[30];
 
     printf("I am rank %d and I'm on job one.\n", world_rank);
-    ret = read_and_put("./test_files/names101.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put("./test_files/names30000.txt", &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job one on  rank %d.\n", world_rank);
         return ret;
@@ -161,7 +161,9 @@ int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA lo
         return -1;
     }
 
+	int z = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
+		printf("\rZaehlor: %d", z++);
         Entry e;
         if ((key = strsep(&line, ",")) == NULL) {
             printf("ERROR key:%s\n", key);
