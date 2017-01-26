@@ -1,0 +1,254 @@
+mpicc -o bin/main_test src/main_test.c src/la.c src/mutex.c src/hash.c src/separate.c src/mpi_error.c src/check.c src/insert.c
+HASH=0 mpiexec -n 3 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 6341, collisions: 3641, updated values 0.
+3 8.622687
+Rank 0 finished its work!
+	Inserted values: 6336, collisions: 3662, updated values 0.
+3 8.725289
+Rank 2 finished its work!
+	Inserted values: 6218, collisions: 3775, updated values 2.
+3 8.825101
+Compare check = 0
+HASH=0 mpiexec -n 4 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 7100, collisions: 2898, updated values 0.
+4 9.574604
+Rank 1 finished its work!
+	Inserted values: 7055, collisions: 2927, updated values 0.
+4 9.678102
+Rank 2 finished its work!
+	Inserted values: 7014, collisions: 2981, updated values 0.
+4 9.701211
+Compare check = 0
+HASH=0 mpiexec -n 5 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 7551, collisions: 2447, updated values 0.
+5 10.363097
+Rank 2 finished its work!
+	Inserted values: 7566, collisions: 2429, updated values 0.
+5 10.393287
+Rank 1 finished its work!
+	Inserted values: 7491, collisions: 2489, updated values 2.
+5 10.421692
+Compare check = 0
+HASH=0 mpiexec -n 6 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 7859, collisions: 2123, updated values 0.
+6 10.763331
+Rank 2 finished its work!
+	Inserted values: 7848, collisions: 2145, updated values 2.
+6 10.831051
+Rank 0 finished its work!
+	Inserted values: 7831, collisions: 2167, updated values 0.
+6 10.933879
+Compare check = 0
+HASH=0 mpiexec -n 7 -f machines.txt bin/main_test
+Rank 2 finished its work!
+	Inserted values: 8176, collisions: 1819, updated values 0.
+7 11.572123
+Rank 1 finished its work!
+	Inserted values: 8057, collisions: 1923, updated values 2.
+7 11.593935
+Rank 0 finished its work!
+	Inserted values: 8073, collisions: 1925, updated values 0.
+7 11.693804
+Compare check = 0
+HASH=0 mpiexec -n 8 -f machines.txt bin/main_test
+Rank 2 finished its work!
+	Inserted values: 8333, collisions: 1662, updated values 0.
+8 12.166066
+Rank 0 finished its work!
+	Inserted values: 8405, collisions: 1593, updated values 0.
+8 12.201685
+Rank 1 finished its work!
+	Inserted values: 8378, collisions: 1603, updated values 1.
+8 12.308166
+Compare check = 0
+HASH=0 mpiexec -n 9 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 8503, collisions: 1495, updated values 0.
+9 12.516371
+Rank 1 finished its work!
+	Inserted values: 8490, collisions: 1492, updated values 0.
+9 12.540038
+Rank 2 finished its work!
+	Inserted values: 8505, collisions: 1488, updated values 2.
+9 12.650547
+Compare check = 0
+HASH=0 mpiexec -n 10 -f machines.txt bin/main_test
+Rank 2 finished its work!
+	Inserted values: 8679, collisions: 1316, updated values 0.
+10 12.903319
+Rank 1 finished its work!
+	Inserted values: 8595, collisions: 1384, updated values 3.
+10 12.957075
+Rank 0 finished its work!
+	Inserted values: 8643, collisions: 1355, updated values 0.
+10 12.987409
+Compare check = 0
+HASH=0 mpiexec -n 11 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 8752, collisions: 1230, updated values 0.
+11 13.229657
+Rank 0 finished its work!
+	Inserted values: 8761, collisions: 1237, updated values 0.
+11 13.244100
+Rank 2 finished its work!
+	Inserted values: 8788, collisions: 1204, updated values 3.
+11 13.327571
+Compare check = 0
+HASH=0 mpiexec -n 12 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 8843, collisions: 1155, updated values 0.
+12 13.334462
+Rank 1 finished its work!
+	Inserted values: 8839, collisions: 1143, updated values 0.
+12 13.414041
+Rank 2 finished its work!
+	Inserted values: 8844, collisions: 1149, updated values 2.
+12 13.527461
+Compare check = 0
+HASH=0 mpiexec -n 13 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 8948, collisions: 1050, updated values 0.
+13 14.124335
+Rank 1 finished its work!
+	Inserted values: 8924, collisions: 1058, updated values 0.
+13 14.128919
+Rank 2 finished its work!
+	Inserted values: 8984, collisions: 1008, updated values 3.
+13 14.184066
+Compare check = 0
+HASH=0 mpiexec -n 14 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 8984, collisions: 998, updated values 0.
+14 14.627695
+Rank 2 finished its work!
+	Inserted values: 9020, collisions: 972, updated values 3.
+14 14.667788
+Rank 0 finished its work!
+	Inserted values: 8947, collisions: 1051, updated values 0.
+14 14.719276
+Compare check = 0
+HASH=0 mpiexec -n 15 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 9010, collisions: 972, updated values 0.
+15 15.214063
+Rank 0 finished its work!
+	Inserted values: 9093, collisions: 905, updated values 0.
+15 15.241176
+Rank 2 finished its work!
+	Inserted values: 9066, collisions: 926, updated values 3.
+15 15.251730
+Compare check = 0
+HASH=0 mpiexec -n 16 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9176, collisions: 822, updated values 0.
+16 15.298501
+Rank 1 finished its work!
+	Inserted values: 9123, collisions: 859, updated values 0.
+16 15.320162
+Rank 2 finished its work!
+	Inserted values: 9085, collisions: 908, updated values 2.
+16 15.345302
+Compare check = 0
+HASH=0 mpiexec -n 17 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9150, collisions: 848, updated values 0.
+17 15.269104
+Rank 1 finished its work!
+	Inserted values: 9153, collisions: 829, updated values 0.
+17 15.323727
+Rank 2 finished its work!
+	Inserted values: 9164, collisions: 828, updated values 3.
+17 15.405605
+Compare check = 0
+HASH=0 mpiexec -n 18 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9200, collisions: 798, updated values 0.
+18 15.108459
+Rank 1 finished its work!
+	Inserted values: 9194, collisions: 788, updated values 0.
+18 15.238963
+Rank 2 finished its work!
+	Inserted values: 9208, collisions: 785, updated values 2.
+18 15.365151
+Compare check = 0
+HASH=0 mpiexec -n 19 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 9226, collisions: 756, updated values 0.
+19 15.115832
+Rank 0 finished its work!
+	Inserted values: 9251, collisions: 747, updated values 0.
+19 15.385859
+Rank 2 finished its work!
+	Inserted values: 9224, collisions: 768, updated values 3.
+19 15.442864
+Compare check = 0
+HASH=0 mpiexec -n 20 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9300, collisions: 698, updated values 0.
+20 15.462989
+Rank 1 finished its work!
+	Inserted values: 9247, collisions: 735, updated values 0.
+20 15.475782
+Rank 2 finished its work!
+	Inserted values: 9300, collisions: 692, updated values 3.
+20 15.498383
+Compare check = 0
+HASH=0 mpiexec -n 21 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 9255, collisions: 727, updated values 0.
+21 15.484890
+Rank 2 finished its work!
+	Inserted values: 9332, collisions: 661, updated values 2.
+21 15.491753
+Rank 0 finished its work!
+	Inserted values: 9286, collisions: 712, updated values 0.
+21 15.544002
+Compare check = 0
+HASH=0 mpiexec -n 22 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 9363, collisions: 619, updated values 0.
+22 15.188067
+Rank 2 finished its work!
+	Inserted values: 9356, collisions: 636, updated values 3.
+22 15.279808
+Rank 0 finished its work!
+	Inserted values: 9327, collisions: 671, updated values 0.
+22 15.452265
+Compare check = 0
+HASH=0 mpiexec -n 23 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9344, collisions: 654, updated values 0.
+23 15.474919
+Rank 2 finished its work!
+	Inserted values: 9343, collisions: 652, updated values 0.
+23 15.549993
+Rank 1 finished its work!
+	Inserted values: 9366, collisions: 613, updated values 3.
+23 15.570470
+Compare check = 0
+HASH=0 mpiexec -n 24 -f machines.txt bin/main_test
+Rank 0 finished its work!
+	Inserted values: 9412, collisions: 586, updated values 0.
+24 14.945760
+Rank 1 finished its work!
+	Inserted values: 9401, collisions: 581, updated values 0.
+24 15.467047
+Rank 2 finished its work!
+	Inserted values: 9375, collisions: 617, updated values 3.
+24 15.533054
+Compare check = 0
+HASH=0 mpiexec -n 25 -f machines.txt bin/main_test
+Rank 1 finished its work!
+	Inserted values: 9402, collisions: 580, updated values 0.
+25 14.735181
+Rank 0 finished its work!
+	Inserted values: 9433, collisions: 565, updated values 0.
+25 14.748135
+Rank 2 finished its work!
+	Inserted values: 9370, collisions: 623, updated values 2.
+25 15.315998
+Compare check = 0

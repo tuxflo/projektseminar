@@ -9996,5 +9996,3 @@
 9998, backstabbing_leavitt
 9999, hopeful_jepsen
 10000, agitated_davinci
-29981, clever_engelbart
-29976, prickly_einstein

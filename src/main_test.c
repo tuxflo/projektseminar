@@ -13,10 +13,11 @@
 #include "separate.h"
 #include "check.h"
 
-int job_zero(LA local_array, int world_rank);
+int job_zero(LA local_array, int world_rank, char* file);
 int job_one(LA local_array, int world_rank);
 int job_two(LA local_array, int world_rank);
 int default_job(LA local_array, int world_rank);
+int do_job_zero(int world_rank, char* file, LA local_array);
 int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA local_array);
 Entry *check_buffer = NULL;
 
@@ -58,59 +59,77 @@ int main(int argc, char **argv) {
 
     // DO Work
     if (world_rank == 0) {
-
-        clock_t start, end;
-        double time_diff;
-
-        start = clock();
-
-        int world_size;
-        _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
-
-        ret = job_zero(local_array, world_rank);
+		ret = do_job_zero(world_rank, "./test_files/names30000.txt", local_array);
         if (ret != 0) {
-            printf("Something went wrong during job zero!\n");
+            printf("Something went wrong on rank 0!\n");
         }
-
-        end = clock();
-        time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
-        printf("\tCPU-Time: %f seconds, global hashmap size: %d.\n", time_diff, ELEMENT_COUNT * world_size);
-        printf("Compare check: %d\n", check_values(local_array, world_size, check_buffer));
-    } else {
+        printf("Compare check = %d\n", check_values(local_array, world_size, check_buffer));     
+	} 
+	/*
+	else if (world_rank == 1) {
+		ret = do_job_zero(world_rank, "./test_files/names10001_20000.txt", local_array);
+        if (ret != 0) {
+            printf("Something went wrong on rank 1!\n");
+        }        
+	} else if (world_rank == 2) {
+		ret = do_job_zero(world_rank, "test_files/names20001_30000.txt", local_array);
+        if (ret != 0) {
+            printf("Something went wrong on rank 2!\n");
+        }		
+	} 
+	* 
+	*/
+	else {
           ret = default_job(local_array, world_rank);
           if (ret != 0) {
               printf("Something went wrong during the default job!\n");
           }
-      }
+	}
       
-      _MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
-      _MPI_CHECK_(MPI_Finalize());
-      exit(EXIT_SUCCESS);
+	_MPI_CHECK_(MPI_Barrier(MPI_COMM_WORLD));
+	_MPI_CHECK_(MPI_Finalize());
+	exit(EXIT_SUCCESS);
 }
 
+int do_job_zero(int world_rank, char* file, LA local_array) {
+	int ret;
+	clock_t start, end;
+    double time_diff;
 
-int job_zero(LA local_array, int world_rank) {
+    start = clock();
+
+    int world_size;
+    _MPI_CHECK_(MPI_Comm_size(MPI_COMM_WORLD, &world_size));
+
+    ret = job_zero(local_array, world_rank, file);
+    if (ret != 0) {
+          printf("Something went wrong during job zero!\n");
+    }
+
+    end = clock();
+    time_diff = ((double) (end - start)) / CLOCKS_PER_SEC;
+    printf("%d %f\n", world_size, time_diff);
+    return ret;
+}
+int job_zero(LA local_array, int world_rank, char* file) {
     int ret;
     int insert_count = 0;
     int collision_count = 0;
     int update_count = 0;
     char message[30];
 
-    printf("I am rank %d and I'm on job zero.\n", world_rank);
+    //printf("I am rank %d and I'm on job zero.\n", world_rank);
     char buf[BUFFER_SIZE];
     int tmp_rank, i;
     memset(buf, '\0', sizeof(buf));
     int world_size;
     MPI_Comm_size(MPI_COMM_WORLD, &world_size);
-    ret = read_and_put("./test_files/names30000.txt", &insert_count, &collision_count, &update_count, local_array);
+    ret = read_and_put(file, &insert_count, &collision_count, &update_count, local_array);
     if (ret != 0) {
         printf("Something went wrong during job zero on  rank %d.\n", world_rank);
         return ret;
     }
     printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
-    strcpy(buf, la_get(local_array, "1"));
-    printf("Buf: %s\n", buf);
-
     return 0;
 }
 
@@ -128,7 +147,6 @@ int job_one(LA local_array, int world_rank) {
         return ret;
     }
     printf("Rank %d finished its work!\n\tInserted values: %d, collisions: %d, updated values %d.\n", world_rank, insert_count, collision_count, update_count);
-
     return 0;
 }
 int job_two(LA local_array, int world_rank) {
@@ -136,7 +154,7 @@ int job_two(LA local_array, int world_rank) {
     return 0;
 }
 int default_job(LA local_array, int world_rank){
-    printf("I am rank %d and I'm on the default job.\n", world_rank);
+    //printf("I am rank %d and I'm on the default job.\n", world_rank);
     return 0;
 }
 
@@ -163,7 +181,7 @@ int read_and_put(char *file, int *inserted, int *collisions, int *updated, LA lo
 
 	int z = 0;
     while ((read = getline(&line, &len, fp)) != -1) {
-		printf("\rZaehlor: %d", z++);
+		//printf("\rZaehlor: %d", z++);
         Entry e;
         if ((key = strsep(&line, ",")) == NULL) {
             printf("ERROR key:%s\n", key);
